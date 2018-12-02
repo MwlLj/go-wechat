@@ -15,7 +15,8 @@ import (
 )
 
 type CServer struct {
-	m_userInfo common.CUserInfo
+	m_userInfo      common.CUserInfo
+	m_decodeFactory CDecodeFactory
 }
 
 func (this *CServer) init(info *common.CUserInfo) {
@@ -42,18 +43,8 @@ func (this *CServer) validateUrl(w http.ResponseWriter, r *http.Request) bool {
 		return false
 	}
 	echostr := strings.Join(r.Form["echostr"], "")
-	fmt.Fprintf(w, echostr)
+	fmt.Fprint(w, echostr)
 	return true
-}
-
-func (this *CServer) parseTextRequestBody(r *http.Request) ([]byte, *CTextRequest) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		return body, nil
-	}
-	requestBody := &CTextRequest{}
-	xml.Unmarshal(body, requestBody)
-	return body, requestBody
 }
 
 func (this *CServer) makeTextResponseBody(fromUserName, toUserName, content string) ([]byte, error) {
@@ -67,28 +58,39 @@ func (this *CServer) makeTextResponseBody(fromUserName, toUserName, content stri
 }
 
 func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("request ...")
 	r.ParseForm()
 	if !this.validateUrl(w, r) {
-		fmt.Fprintf(w, "check invalid")
+		fmt.Fprint(w, "check invalid")
 		return
 	}
 
 	if r.Method == "POST" {
-		_, textRequest := this.parseTextRequestBody(r)
-		if textRequest != nil {
-			responseText, err := this.makeTextResponseBody(textRequest.ToUserName,
-				textRequest.FromUserName,
-				"Hello, "+textRequest.FromUserName)
-			if err != nil {
-				return
-			}
-			w.Header().Set("Content-Type", "text/xml")
-			fmt.Fprintf(w, string(responseText))
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			fmt.Fprint(w, "read body error")
+			return
 		}
+		param := CDecodeParam{}
+		param.DecodeType = DecodeTypeMessage
+		decoding := this.m_decodeFactory.Decoding(&param)
+		if decoding == nil {
+			fmt.Fprint(w, "decoding message error")
+			return
+		}
+		message := decoding.Parse(body)
+		msg := message.(*CMessage)
+
+		responseText, err := this.makeTextResponseBody(string(msg.ToUserName),
+			string(msg.FromUserName),
+			"Hello, "+string(msg.FromUserName))
+		if err != nil {
+			return
+		}
+		w.Header().Set("Content-Type", "text/xml")
+		fmt.Fprint(w, string(responseText))
 		return
 	}
-	fmt.Fprintf(w, "not found")
+	fmt.Fprint(w, "not found")
 }
 
 func (this *CServer) startListen(port int, u *string, ch chan<- bool) {
