@@ -1,5 +1,7 @@
 package common
 
-type IMessageCallback interface {
-	OnMessage(msg *string)
+type IEvent interface {
+}
+
+type IMessage interface {
 }
