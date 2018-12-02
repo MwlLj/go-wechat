@@ -56,7 +56,7 @@ func (this *CServer) parseTextRequestBody(r *http.Request) ([]byte, *CTextReques
 	return body, requestBody
 }
 
-func makeTextResponseBody(fromUserName, toUserName, content string) ([]byte, error) {
+func (this *CServer) makeTextResponseBody(fromUserName, toUserName, content string) ([]byte, error) {
 	textResponseBody := &CTextResponse{}
 	textResponseBody.FromUserName = CData(fromUserName)
 	textResponseBody.ToUserName = CData(toUserName)
@@ -75,10 +75,16 @@ func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
-		body, textRequest := this.parseTextRequestBody(r)
+		_, textRequest := this.parseTextRequestBody(r)
 		if textRequest != nil {
+			responseText, err := this.makeTextResponseBody(textRequest.ToUserName,
+				textRequest.FromUserName,
+				"Hello, "+textRequest.FromUserName)
+			if err != nil {
+				return
+			}
 			w.Header().Set("Content-Type", "text/xml")
-			fmt.Fprintf(w, string(body))
+			fmt.Fprintf(w, string(responseText))
 		}
 		return
 	}
