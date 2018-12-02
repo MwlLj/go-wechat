@@ -23,7 +23,7 @@ type CMessage struct {
 	MsgType      CData         `xml:"MsgType"`
 	MsgId        int64         `xml:"MsgId"`
 	Content      CData         `xml:"Content"`
-	PicUrl       CData         `xml:"Content"`
+	PicUrl       CData         `xml:"PicUrl"`
 	MediaId      int64         `xml:"MediaId"`
 	Format       CData         `xml:"Format"`
 	ThumbMediaId CData         `xml:"ThumbMediaId"`

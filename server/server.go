@@ -78,6 +78,10 @@ func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		message := decoding.Parse(body)
+		if message == nil {
+			fmt.Fprint(w, "parse message request error")
+			return
+		}
 		msg := message.(*CMessage)
 
 		responseText, err := this.makeTextResponseBody(string(msg.ToUserName),
