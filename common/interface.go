@@ -19,3 +19,13 @@ type IToken interface {
 	GetToken(timeoutMS int64) (token []byte, e error)
 	UpdateToken(timeoutMS int64) (token []byte, e error)
 }
+
+type IButton interface {
+	AddSubButton(button common.IButton)
+	Data() *common.CButtonData
+}
+
+type IMenu interface {
+	AddButton(button common.IButton)
+	Create()
+}

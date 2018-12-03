@@ -86,3 +86,13 @@ type CEvent struct {
 	Longitude  float64
 	Precision  float64
 }
+
+type CButtonInfo struct {
+	Type                string
+	Name                string
+	Key                 string
+	Url                 string
+	MediaId             string
+	MiniProgramAppId    string
+	MiniProgramPagePath string
+}
