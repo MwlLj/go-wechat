@@ -26,7 +26,7 @@ func main() {
 		Token:     "c0082b4d-b46f-4d67-b0eb-7a0d15dd5ef2",
 	}
 	wc := wechat.New(&info)
-	wc.RegisterMsg(&CMessageCallback{}, nil)
+	// wc.RegisterMsg(&CMessageCallback{}, nil)
 	wc.RegisterMsgFunc(func(reply common.IReply, msg *common.CMessage, userData interface{}) error {
 		msg.Content = "hello function"
 		reply.SendMessage(msg)

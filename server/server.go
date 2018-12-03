@@ -18,6 +18,7 @@ type CServer struct {
 	m_exeChannel            chan bool
 	m_userInfo              common.CUserInfo
 	m_decodeFactory         CDecodeFactory
+	m_tokenSender           common.IToken
 	m_msgCallback           common.IMessage
 	m_msgCallbackUserdata   interface{}
 	m_eventCallback         common.IEvent
@@ -25,6 +26,7 @@ type CServer struct {
 }
 
 func (this *CServer) init(info *common.CUserInfo) {
+	this.m_tokenSender = sender.NewTokenSender(info)
 	this.startListen(info.Port, &info.Url)
 }
 

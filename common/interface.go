@@ -12,3 +12,7 @@ type IMessage interface {
 type IReply interface {
 	SendMessage(msg *CMessage) error
 }
+
+type IToken interface {
+	GetToken() (token []byte, e error)
+}
