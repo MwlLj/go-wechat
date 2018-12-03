@@ -14,6 +14,7 @@ import (
 )
 
 type CServer struct {
+	m_exeChannel            chan bool
 	m_userInfo              common.CUserInfo
 	m_decodeFactory         CDecodeFactory
 	m_msgCallback           common.IMessage
@@ -23,9 +24,13 @@ type CServer struct {
 }
 
 func (this *CServer) init(info *common.CUserInfo) {
-	exeChan := make(chan bool, 1)
-	this.startListen(info.Port, &info.Url, exeChan)
-	<-exeChan
+	this.startListen(info.Port, &info.Url)
+}
+
+func (this *CServer) Loop() {
+	this.m_exeChannel = make(chan bool, 1)
+	<-this.m_exeChannel
+	close(this.m_exeChannel)
 }
 
 func (this *CServer) makeSignature(timestamp, nonce string) string {
@@ -86,7 +91,7 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 	sender := CSender{m_responseWriter: w}
 	if this.m_msgCallback != nil {
 		for {
-			err = this.m_msgCallback.OnMessage(&sender, msg)
+			err = this.m_msgCallback.OnMessage(&sender, msg, this.m_msgCallbackUserdata)
 			if err != nil {
 				break
 			}
@@ -104,7 +109,7 @@ func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (this *CServer) startListen(port int, u *string, ch chan<- bool) {
+func (this *CServer) startListen(port int, u *string) {
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		this.handleRequest(w, r)
 	}
@@ -119,7 +124,7 @@ func (this *CServer) startListen(port int, u *string, ch chan<- bool) {
 		err := http.ListenAndServe(host, mux)
 		if err != nil {
 			fmt.Println(err)
-			ch <- false
+			this.m_exeChannel <- false
 		}
 	}()
 }
