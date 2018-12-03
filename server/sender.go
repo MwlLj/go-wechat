@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"net/http"
-	"time"
 )
 
 type CSender struct {
@@ -14,8 +13,8 @@ type CSender struct {
 
 func (this *CSender) SendMessage(msg *common.CMessage) error {
 	response := *msg
-	response.SetToUserName(&msg.FromUserName)
-	response.SetFromUserName(&msg.ToUserName)
+	response.SetToUserName(&msg.ToUserName)
+	response.SetFromUserName(&msg.FromUserName)
 	res, err := xml.MarshalIndent(&response, " ", "  ")
 	if err != nil {
 		return err
