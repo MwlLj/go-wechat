@@ -24,13 +24,3 @@ func (this *CSender) SendMessage(msg *common.CMessage) error {
 	fmt.Fprint(this.m_responseWriter, string(res))
 	return nil
 }
-
-func (this *CSender) makeTextResponseBody(fromUserName, toUserName, content common.CData) ([]byte, error) {
-	textResponseBody := &common.CMessage{}
-	textResponseBody.FromUserName = fromUserName
-	textResponseBody.ToUserName = toUserName
-	textResponseBody.MsgType = "text"
-	textResponseBody.Content = content
-	textResponseBody.CreateTime = time.Duration(time.Now().Unix())
-	return xml.MarshalIndent(textResponseBody, " ", "  ")
-}
