@@ -6,7 +6,9 @@ import (
 )
 
 var (
+	DecodeTypeResXml  string = "resxml"
 	DecodeTypeMessage string = "message"
+	DecodeTypeEvent   string = "event"
 )
 
 type IDecoding interface {
@@ -23,8 +25,22 @@ type CDecodeFactory struct {
 func (this *CDecodeFactory) Decoding(param *CDecodeParam) IDecoding {
 	if param.DecodeType == DecodeTypeMessage {
 		return &CMessageDecoding{}
+	} else if param.DecodeType == DecodeTypeEvent {
+		return &CEventDecoding{}
 	}
 	return nil
+}
+
+type CResXmlDecoding struct {
+}
+
+func (this *CResXmlDecoding) Parse(body []byte) interface{} {
+	res := common.CWxResXml{}
+	err := xml.Unmarshal(body, &res)
+	if err != nil {
+		return nil
+	}
+	return &res
 }
 
 type CMessageDecoding struct {
@@ -37,4 +53,16 @@ func (this *CMessageDecoding) Parse(body []byte) interface{} {
 		return nil
 	}
 	return &msg
+}
+
+type CEventDecoding struct {
+}
+
+func (this *CEventDecoding) Parse(body []byte) interface{} {
+	event := common.CEvent{}
+	err := xml.Unmarshal(body, &event)
+	if err != nil {
+		return nil
+	}
+	return &event
 }

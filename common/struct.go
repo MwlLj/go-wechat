@@ -31,7 +31,7 @@ func (c CData) MarshelXML(e *xml.Encoder, start xml.StartElement) error {
 	}{string(c)}, start)
 }
 
-type CMessage struct {
+type CWxResXml struct {
 	XMLName      xml.Name      `xml:"xml"`
 	ToUserName   CData         `xml:"ToUserName"`
 	FromUserName CData         `xml:"FromUserName"`
@@ -50,72 +50,109 @@ type CMessage struct {
 	Title        CData         `xml:"Title"`
 	Description  CData         `xml:"Description"`
 	Url          CData         `xml:"Url"`
+	Event        CData         `xml:"Event"`
+	EventKey     CData         `xml:"EventKey"`
+	Ticket       CData         `xml:"Ticket"`
+	Latitude     float64       `xml:"Latitude"`
+	Longitude    float64       `xml:"Longitude"`
+	Precision    float64       `xml:"Precision"`
 }
 
-func (this *CMessage) SetToUserName(toUserName *CData) {
+func (this *CWxResXml) SetToUserName(toUserName *CData) {
 	this.ToUserName = *toUserName
 }
 
-func (this *CMessage) SetFromUserName(fromUserName *CData) {
+func (this *CWxResXml) SetFromUserName(fromUserName *CData) {
 	this.FromUserName = *fromUserName
 }
 
-func (this *CMessage) SetCreateTime(t *time.Duration) {
+func (this *CWxResXml) SetCreateTime(t *time.Duration) {
 	this.CreateTime = *t
 }
 
-func (this *CMessage) SetMsgType(msgType string) {
+func (this *CWxResXml) SetMsgType(msgType string) {
 	this.MsgType = CData(msgType)
 }
 
-func (this *CMessage) SetMsgId(msgId int64) {
+func (this *CWxResXml) SetMsgId(msgId int64) {
 	this.MsgId = msgId
 }
 
-func (this *CMessage) SetContent(content string) {
+func (this *CWxResXml) SetContent(content string) {
 	this.Content = CData(content)
 }
 
-func (this *CMessage) SetPicUrl(url string) {
+func (this *CWxResXml) SetPicUrl(url string) {
 	this.PicUrl = CData(url)
 }
 
-func (this *CMessage) SetMediaId(mediaId int64) {
+func (this *CWxResXml) SetMediaId(mediaId int64) {
 	this.MediaId = mediaId
 }
 
-func (this *CMessage) SetFormat(format string) {
+func (this *CWxResXml) SetFormat(format string) {
 	this.Format = CData(format)
 }
 
-func (this *CMessage) SetThumbMediaId(thumbMediaId string) {
+func (this *CWxResXml) SetThumbMediaId(thumbMediaId string) {
 	this.ThumbMediaId = CData(thumbMediaId)
 }
 
-func (this *CMessage) SetLocationX(x float64) {
+func (this *CWxResXml) SetLocationX(x float64) {
 	this.Location_X = x
 }
 
-func (this *CMessage) SetLocationY(y float64) {
+func (this *CWxResXml) SetLocationY(y float64) {
 	this.Location_Y = y
 }
 
-func (this *CMessage) SetScale(scale int) {
+func (this *CWxResXml) SetScale(scale int) {
 	this.Scale = scale
 }
 
-func (this *CMessage) SetLabel(label string) {
+func (this *CWxResXml) SetLabel(label string) {
 	this.Label = CData(label)
 }
 
-func (this *CMessage) SetTitle(title string) {
+func (this *CWxResXml) SetTitle(title string) {
 	this.Title = CData(title)
 }
 
-func (this *CMessage) SetDesription(description string) {
+func (this *CWxResXml) SetDesription(description string) {
 	this.Description = CData(description)
 }
 
-func (this *CMessage) SetUrl(url string) {
+func (this *CWxResXml) SetUrl(url string) {
 	this.Url = CData(url)
+}
+
+type CMessage struct {
+	CreateTime   time.Duration
+	MsgType      string
+	MsgId        int64
+	Content      string
+	PicUrl       string
+	MediaId      int64
+	Format       string
+	ThumbMediaId string
+	LocationX    float64
+	LocationY    float64
+	Scale        int
+	Label        string
+	Title        string
+	Description  string
+	Url          string
+}
+
+type CEvent struct {
+	ToUserName   string
+	FromUserName string
+	CreateTime   time.Duration
+	MsgType      string
+	Event        string
+	EventKey     string
+	Ticket       string
+	Latitude     float64
+	Longitude    float64
+	Precision    float64
 }

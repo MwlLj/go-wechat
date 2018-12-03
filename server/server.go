@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/sender"
+	"github.com/MwlLj/go-wechat/utils"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -58,9 +59,9 @@ func (this *CServer) validateUrl(w http.ResponseWriter, r *http.Request) bool {
 	return true
 }
 
-func (this *CServer) parseMessage(body []byte, w http.ResponseWriter) *common.CMessage {
+func (this *CServer) parseResContent(body []byte, w http.ResponseWriter) *common.CWxResXml {
 	param := CDecodeParam{}
-	param.DecodeType = DecodeTypeMessage
+	param.DecodeType = DecodeTypeResXml
 	decoding := this.m_decodeFactory.Decoding(&param)
 	if decoding == nil {
 		fmt.Fprint(w, "decoding message error")
@@ -71,7 +72,7 @@ func (this *CServer) parseMessage(body []byte, w http.ResponseWriter) *common.CM
 		fmt.Fprint(w, "parse message request error")
 		return nil
 	}
-	msg := message.(*common.CMessage)
+	msg := message.(*common.CWxResXml)
 	return msg
 }
 
@@ -90,18 +91,24 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
-	msg := this.parseMessage(body, w)
-	reply := sender.CReply{ResponseWriter: w}
-	if this.m_msgCallback != nil {
-		for {
-			err = this.m_msgCallback.OnMessage(&reply, msg, this.m_msgCallbackUserdata)
-			if err != nil {
-				break
+	resXml := this.parseResContent(body, w)
+	if string(resXml.MsgType) != WxMsgTypeEvent {
+		// message
+		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}
+		if this.m_msgCallback != nil {
+			for {
+				msg := utils.ResXml2Message(resXml)
+				err = this.m_msgCallback.OnMessage(&reply, msg, this.m_msgCallbackUserdata)
+				if err != nil {
+					break
+				}
+				return nil
 			}
-			return nil
 		}
+		// reply.SendMessage(msg)
+	} else {
+		// event
 	}
-	reply.SendMessage(msg)
 	return err
 }
 
