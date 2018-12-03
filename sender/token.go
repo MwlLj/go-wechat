@@ -16,28 +16,53 @@ type CTokenJson struct {
 }
 
 type CToken struct {
-	m_tokenJson CTokenJson
-	m_isVaild   bool
+	m_tokenJson          CTokenJson
+	m_isVaild            bool
+	m_tokenVaildChannel  chan bool
+	m_updateTokenChannel chan bool
 }
 
-func (this *CToken) GetToken() (token []byte, e error) {
+func (this *CToken) GetToken(timeoutMS int64) (token []byte, e error) {
+	var isTimeout bool = false
 	if this.m_isVaild == false {
-		return nil, errors.New("token is vaild")
+		if timeoutMS <= 0 {
+			return nil, errors.New("token is vaild")
+		} else {
+			select {
+			case <-this.m_tokenVaildChannel:
+				isTimeout = false
+			case <-time.After(time.Duration(timeoutMS) * time.Millisecond):
+				isTimeout = true
+			}
+		}
+	}
+	if isTimeout == true {
+		return nil, errors.New("timeout")
 	}
 	return []byte(this.m_tokenJson.AccessToken), nil
 }
 
+func (this *CToken) UpdateToken(timeoutMS int64) (token []byte, e error) {
+	this.m_updateTokenChannel <- true
+	this.m_isVaild = false
+	return this.GetToken(timeoutMS)
+}
+
 func (this *CToken) init(info *common.CUserInfo) {
+	this.m_updateTokenChannel = make(chan bool, 1)
+	this.m_tokenVaildChannel = make(chan bool, 1)
 	this.m_isVaild = false
 	go func() {
 		for {
 			err := this.sendTokenRequest(info)
 			if err != nil || this.m_tokenJson.AccessToken == "" {
 				fmt.Println(err)
-				time.Sleep(1000 * time.Millisecond)
+				time.Sleep(100 * time.Millisecond)
 				continue
 			}
 			select {
+			case <-this.m_updateTokenChannel:
+				fmt.Println("[INFO] update token request")
 			case <-time.After(time.Duration(this.m_tokenJson.ExpiresIn) * time.Second):
 				this.m_isVaild = false
 				fmt.Println("[INFO] token timeout")
@@ -75,6 +100,7 @@ func (this *CToken) sendTokenRequest(info *common.CUserInfo) error {
 		return err
 	}
 	this.m_isVaild = true
+	this.m_tokenVaildChannel <- true
 	return nil
 }
 

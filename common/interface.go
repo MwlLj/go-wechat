@@ -14,5 +14,6 @@ type IReply interface {
 }
 
 type IToken interface {
-	GetToken() (token []byte, e error)
+	GetToken(timeoutMS int64) (token []byte, e error)
+	UpdateToken(timeoutMS int64) (token []byte, e error)
 }
