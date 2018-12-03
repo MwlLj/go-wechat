@@ -13,8 +13,8 @@ type CSender struct {
 
 func (this *CSender) SendMessage(msg *common.CMessage) error {
 	response := *msg
-	response.SetToUserName(&msg.ToUserName)
-	response.SetFromUserName(&msg.FromUserName)
+	response.SetToUserName(&msg.FromUserName)
+	response.SetFromUserName(&msg.ToUserName)
 	res, err := xml.MarshalIndent(&response, " ", "  ")
 	if err != nil {
 		return err

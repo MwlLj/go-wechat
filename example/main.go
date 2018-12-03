@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/MwlLj/go-wechat"
 	"github.com/MwlLj/go-wechat/common"
 )
