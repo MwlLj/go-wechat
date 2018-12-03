@@ -59,21 +59,21 @@ func (this *CServer) validateUrl(w http.ResponseWriter, r *http.Request) bool {
 	return true
 }
 
-func (this *CServer) parseResContent(body []byte, w http.ResponseWriter) *common.CWxResXml {
+func (this *CServer) parseResContent(body []byte, w http.ResponseWriter) (*common.CWxResXml, error) {
 	param := CDecodeParam{}
 	param.DecodeType = DecodeTypeResXml
 	decoding := this.m_decodeFactory.Decoding(&param)
 	if decoding == nil {
 		fmt.Fprint(w, "decoding message error")
-		return nil
+		return nil, errors.New("decoding message error")
 	}
 	message := decoding.Parse(body)
 	if message == nil {
 		fmt.Fprint(w, "parse message request error")
-		return nil
+		return nil, errors.New("parse message request error")
 	}
 	msg := message.(*common.CWxResXml)
-	return msg
+	return msg, nil
 }
 
 func (this *CServer) handleCheck(w http.ResponseWriter, r *http.Request) error {
@@ -91,7 +91,10 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
-	resXml := this.parseResContent(body, w)
+	resXml, err := this.parseResContent(body, w)
+	if resXml == nil {
+		return err
+	}
 	if string(resXml.MsgType) != WxMsgTypeEvent {
 		// message
 		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}

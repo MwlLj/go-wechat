@@ -27,6 +27,8 @@ func (this *CDecodeFactory) Decoding(param *CDecodeParam) IDecoding {
 		return &CMessageDecoding{}
 	} else if param.DecodeType == DecodeTypeEvent {
 		return &CEventDecoding{}
+	} else if param.DecodeType == DecodeTypeResXml {
+		return &CResXmlDecoding{}
 	}
 	return nil
 }
