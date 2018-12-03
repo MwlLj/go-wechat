@@ -2,7 +2,7 @@ package server
 
 import (
 	"crypto/sha1"
-	"encoding/xml"
+	"errors"
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"io"
@@ -11,12 +11,15 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type CServer struct {
-	m_userInfo      common.CUserInfo
-	m_decodeFactory CDecodeFactory
+	m_userInfo              common.CUserInfo
+	m_decodeFactory         CDecodeFactory
+	m_msgCallback           common.IMessage
+	m_msgCallbackUserdata   interface{}
+	m_eventCallback         common.IEvent
+	m_eventCallbackUserdata interface{}
 }
 
 func (this *CServer) init(info *common.CUserInfo) {
@@ -47,54 +50,58 @@ func (this *CServer) validateUrl(w http.ResponseWriter, r *http.Request) bool {
 	return true
 }
 
-func (this *CServer) makeTextResponseBody(fromUserName, toUserName, content string) ([]byte, error) {
-	textResponseBody := &CTextResponse{}
-	textResponseBody.FromUserName = CData(fromUserName)
-	textResponseBody.ToUserName = CData(toUserName)
-	textResponseBody.MsgType = CData("text")
-	textResponseBody.Content = CData(content)
-	textResponseBody.CreateTime = time.Duration(time.Now().Unix())
-	return xml.MarshalIndent(textResponseBody, " ", "  ")
+func (this *CServer) parseMessage(body []byte, w http.ResponseWriter) *common.CMessage {
+	param := CDecodeParam{}
+	param.DecodeType = DecodeTypeMessage
+	decoding := this.m_decodeFactory.Decoding(&param)
+	if decoding == nil {
+		fmt.Fprint(w, "decoding message error")
+		return nil
+	}
+	message := decoding.Parse(body)
+	if message == nil {
+		fmt.Fprint(w, "parse message request error")
+		return nil
+	}
+	msg := message.(*common.CMessage)
+	return msg
 }
 
-func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
+func (this *CServer) handleCheck(w http.ResponseWriter, r *http.Request) error {
 	r.ParseForm()
 	if !this.validateUrl(w, r) {
 		fmt.Fprint(w, "check invalid")
-		return
+		return errors.New("check invalid")
 	}
+	return nil
+}
 
-	if r.Method == "POST" {
-		body, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			fmt.Fprint(w, "read body error")
-			return
-		}
-		param := CDecodeParam{}
-		param.DecodeType = DecodeTypeMessage
-		decoding := this.m_decodeFactory.Decoding(&param)
-		if decoding == nil {
-			fmt.Fprint(w, "decoding message error")
-			return
-		}
-		message := decoding.Parse(body)
-		if message == nil {
-			fmt.Fprint(w, "parse message request error")
-			return
-		}
-		msg := message.(*CMessage)
-
-		responseText, err := this.makeTextResponseBody(string(msg.ToUserName),
-			string(msg.FromUserName),
-			"Hello, "+string(msg.FromUserName))
-		if err != nil {
-			return
-		}
-		w.Header().Set("Content-Type", "text/xml")
-		fmt.Fprint(w, string(responseText))
-		return
+func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
+	var err error = nil
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
 	}
-	fmt.Fprint(w, "not found")
+	msg := this.parseMessage(body, w)
+	sender := CSender{m_responseWriter: w}
+	if this.m_msgCallback != nil {
+		for {
+			err = this.m_msgCallback.OnMessage(&sender, msg)
+			if err != nil {
+				break
+			}
+			return nil
+		}
+	}
+	sender.SendMessage(msg)
+	return err
+}
+
+func (this *CServer) handleRequest(w http.ResponseWriter, r *http.Request) {
+	this.handleCheck(w, r)
+	if r.Method == http.MethodPost {
+		this.handlePost(w, r)
+	}
 }
 
 func (this *CServer) startListen(port int, u *string, ch chan<- bool) {
@@ -111,15 +118,20 @@ func (this *CServer) startListen(port int, u *string, ch chan<- bool) {
 		mux.HandleFunc(url, handler)
 		err := http.ListenAndServe(host, mux)
 		if err != nil {
+			fmt.Println(err)
 			ch <- false
 		}
 	}()
 }
 
-func (this *CServer) RegisterEvent(callback common.IEvent, userData interface{}) {
+func (this *CServer) RegisterMsg(callback common.IMessage, userData interface{}) {
+	this.m_msgCallback = callback
+	this.m_msgCallbackUserdata = userData
 }
 
-func (this *CServer) RegisterMsg(callback common.IMessage, userData interface{}) {
+func (this *CServer) RegisterEvent(callback common.IEvent, userData interface{}) {
+	this.m_eventCallback = callback
+	this.m_eventCallbackUserdata = userData
 }
 
 func New(info *common.CUserInfo) *CServer {

@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/xml"
+	"github.com/MwlLj/go-wechat/common"
 )
 
 var (
@@ -30,7 +31,7 @@ type CMessageDecoding struct {
 }
 
 func (this *CMessageDecoding) Parse(body []byte) interface{} {
-	msg := CMessage{}
+	msg := common.CMessage{}
 	err := xml.Unmarshal(body, &msg)
 	if err != nil {
 		return nil
