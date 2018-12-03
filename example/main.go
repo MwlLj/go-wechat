@@ -12,7 +12,7 @@ type CMessageCallback struct {
 }
 
 func (this *CMessageCallback) OnMessage(reply common.IReply, msg *common.CMessage, userData interface{}) error {
-	msg.Content = "hello"
+	msg.Content = "hello struct"
 	reply.SendMessage(msg)
 	return nil
 }
@@ -27,5 +27,10 @@ func main() {
 	}
 	wc := wechat.New(&info)
 	wc.RegisterMsg(&CMessageCallback{}, nil)
+	wc.RegisterMsgFunc(func(reply common.IReply, msg *common.CMessage, userData interface{}) error {
+		msg.Content = "hello function"
+		reply.SendMessage(msg)
+		return nil
+	}, nil)
 	wc.Loop()
 }

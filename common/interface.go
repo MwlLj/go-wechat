@@ -1,5 +1,7 @@
 package common
 
+type FuncMsgCallback func(reply IReply, msg *CMessage, userData interface{}) error
+
 type IEvent interface {
 }
 

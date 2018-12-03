@@ -135,6 +135,10 @@ func (this *CServer) RegisterMsg(callback common.IMessage, userData interface{})
 	this.m_msgCallbackUserdata = userData
 }
 
+func (this *CServer) RegisterMsgFunc(callback common.FuncMsgCallback, userData interface{}) {
+	this.RegisterMsg(&CMsgCallbackDefault{MsgCallback: callback}, userData)
+}
+
 func (this *CServer) RegisterEvent(callback common.IEvent, userData interface{}) {
 	this.m_eventCallback = callback
 	this.m_eventCallbackUserdata = userData

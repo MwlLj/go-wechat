@@ -8,6 +8,7 @@ import (
 type IWeChat interface {
 	RegisterEvent(callback common.IEvent, userData interface{})
 	RegisterMsg(callback common.IMessage, userData interface{})
+	RegisterMsgFunc(callback common.FuncMsgCallback, userData interface{})
 	Loop()
 }
 
