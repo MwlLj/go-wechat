@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	MsgTypeText       string = "test"
+	MsgTypeText       string = "text"
 	MsgTypeImage      string = "image"
 	MsgTypeVoice      string = "voice"
 	MsgTypeVideo      string = "video"
