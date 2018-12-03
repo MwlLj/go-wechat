@@ -34,7 +34,8 @@ func main() {
 	}, nil)
 	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, userData interface{}) error {
 		msg := common.CMessage{}
-		msg.Content = "thank you scanning"
+		msg.Content = "event: " + event.Event
+		msg.MsgType = common.MsgTypeText
 		reply.SendMessage(&msg)
 		return nil
 	}, nil)

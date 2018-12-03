@@ -2,6 +2,7 @@ package sender
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/utils"
@@ -15,6 +16,9 @@ type CReply struct {
 }
 
 func (this *CReply) SendMessage(msg *common.CMessage) error {
+	if msg.MsgType == "" {
+		return errors.New("msgType is empty")
+	}
 	ext := utils.CCommonExt{}
 	ext.ToUserName = this.FromUserName
 	ext.FromUserName = this.ToUserName
