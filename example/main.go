@@ -6,12 +6,14 @@ import (
 	"github.com/MwlLj/go-wechat/common"
 )
 
+var _ = fmt.Println
+
 type CMessageCallback struct {
 }
 
-func (this *CMessageCallback) OnMessage(sender common.ISender, msg *common.CMessage, userData interface{}) error {
+func (this *CMessageCallback) OnMessage(reply common.IReply, msg *common.CMessage, userData interface{}) error {
 	msg.Content = "hello"
-	sender.SendMessage(msg)
+	reply.SendMessage(msg)
 	return nil
 }
 

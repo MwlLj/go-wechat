@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
+	"github.com/MwlLj/go-wechat/sender"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -88,17 +89,17 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 	msg := this.parseMessage(body, w)
-	sender := CSender{m_responseWriter: w}
+	reply := sender.CReply{ResponseWriter: w}
 	if this.m_msgCallback != nil {
 		for {
-			err = this.m_msgCallback.OnMessage(&sender, msg, this.m_msgCallbackUserdata)
+			err = this.m_msgCallback.OnMessage(&reply, msg, this.m_msgCallbackUserdata)
 			if err != nil {
 				break
 			}
 			return nil
 		}
 	}
-	sender.SendMessage(msg)
+	reply.SendMessage(msg)
 	return err
 }
 

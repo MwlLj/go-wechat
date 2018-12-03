@@ -1,4 +1,4 @@
-package server
+package sender
 
 import (
 	"encoding/xml"
@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-type CSender struct {
-	m_responseWriter http.ResponseWriter
+type CReply struct {
+	ResponseWriter http.ResponseWriter
 }
 
-func (this *CSender) SendMessage(msg *common.CMessage) error {
+func (this *CReply) SendMessage(msg *common.CMessage) error {
 	response := *msg
 	response.SetToUserName(&msg.FromUserName)
 	response.SetFromUserName(&msg.ToUserName)
@@ -19,7 +19,7 @@ func (this *CSender) SendMessage(msg *common.CMessage) error {
 	if err != nil {
 		return err
 	}
-	this.m_responseWriter.Header().Set("Content-Type", "text/xml")
-	fmt.Fprint(this.m_responseWriter, string(res))
+	this.ResponseWriter.Header().Set("Content-Type", "text/xml")
+	fmt.Fprint(this.ResponseWriter, string(res))
 	return nil
 }

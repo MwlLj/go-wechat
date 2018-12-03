@@ -4,9 +4,9 @@ type IEvent interface {
 }
 
 type IMessage interface {
-	OnMessage(sender ISender, msg *CMessage, userData interface{}) error
+	OnMessage(sender IReply, msg *CMessage, userData interface{}) error
 }
 
-type ISender interface {
+type IReply interface {
 	SendMessage(msg *CMessage) error
 }
