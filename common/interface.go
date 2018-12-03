@@ -1,8 +1,10 @@
 package common
 
 type FuncMsgCallback func(reply IReply, msg *CMessage, userData interface{}) error
+type FuncEventCallback func(reply IReply, event *CEvent, userData interface{}) error
 
 type IEvent interface {
+	OnEvent(sender IReply, event *CEvent, userData interface{}) error
 }
 
 type IMessage interface {

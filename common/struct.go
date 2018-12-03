@@ -58,74 +58,6 @@ type CWxResXml struct {
 	Precision    float64       `xml:"Precision"`
 }
 
-func (this *CWxResXml) SetToUserName(toUserName *CData) {
-	this.ToUserName = *toUserName
-}
-
-func (this *CWxResXml) SetFromUserName(fromUserName *CData) {
-	this.FromUserName = *fromUserName
-}
-
-func (this *CWxResXml) SetCreateTime(t *time.Duration) {
-	this.CreateTime = *t
-}
-
-func (this *CWxResXml) SetMsgType(msgType string) {
-	this.MsgType = CData(msgType)
-}
-
-func (this *CWxResXml) SetMsgId(msgId int64) {
-	this.MsgId = msgId
-}
-
-func (this *CWxResXml) SetContent(content string) {
-	this.Content = CData(content)
-}
-
-func (this *CWxResXml) SetPicUrl(url string) {
-	this.PicUrl = CData(url)
-}
-
-func (this *CWxResXml) SetMediaId(mediaId int64) {
-	this.MediaId = mediaId
-}
-
-func (this *CWxResXml) SetFormat(format string) {
-	this.Format = CData(format)
-}
-
-func (this *CWxResXml) SetThumbMediaId(thumbMediaId string) {
-	this.ThumbMediaId = CData(thumbMediaId)
-}
-
-func (this *CWxResXml) SetLocationX(x float64) {
-	this.Location_X = x
-}
-
-func (this *CWxResXml) SetLocationY(y float64) {
-	this.Location_Y = y
-}
-
-func (this *CWxResXml) SetScale(scale int) {
-	this.Scale = scale
-}
-
-func (this *CWxResXml) SetLabel(label string) {
-	this.Label = CData(label)
-}
-
-func (this *CWxResXml) SetTitle(title string) {
-	this.Title = CData(title)
-}
-
-func (this *CWxResXml) SetDesription(description string) {
-	this.Description = CData(description)
-}
-
-func (this *CWxResXml) SetUrl(url string) {
-	this.Url = CData(url)
-}
-
 type CMessage struct {
 	CreateTime   time.Duration
 	MsgType      string
@@ -145,14 +77,12 @@ type CMessage struct {
 }
 
 type CEvent struct {
-	ToUserName   string
-	FromUserName string
-	CreateTime   time.Duration
-	MsgType      string
-	Event        string
-	EventKey     string
-	Ticket       string
-	Latitude     float64
-	Longitude    float64
-	Precision    float64
+	CreateTime time.Duration
+	MsgType    string
+	Event      string
+	EventKey   string
+	Ticket     string
+	Latitude   float64
+	Longitude  float64
+	Precision  float64
 }

@@ -32,5 +32,11 @@ func main() {
 		reply.SendMessage(msg)
 		return nil
 	}, nil)
+	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, userData interface{}) error {
+		msg := common.CMessage{}
+		msg.Content = "thank you scanning"
+		reply.SendMessage(&msg)
+		return nil
+	}, nil)
 	wc.Loop()
 }

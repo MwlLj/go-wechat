@@ -15,7 +15,7 @@ type CReply struct {
 }
 
 func (this *CReply) SendMessage(msg *common.CMessage) error {
-	ext := utils.CMessage2ResXmlExt{}
+	ext := utils.CCommonExt{}
 	ext.ToUserName = this.FromUserName
 	ext.FromUserName = this.ToUserName
 	resXml := utils.Message2ResXml(msg, &ext)

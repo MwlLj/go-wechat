@@ -13,6 +13,9 @@ func (this *CMsgCallbackDefault) OnMessage(reply common.IReply, msg *common.CMes
 }
 
 type CEventCallbackDefault struct {
-	EventCallback         common.IEvent
-	EventCallbackUserdata interface{}
+	EventCallback common.FuncEventCallback
+}
+
+func (this *CEventCallbackDefault) OnEvent(reply common.IReply, event *common.CEvent, userData interface{}) error {
+	return this.EventCallback(reply, event, userData)
 }

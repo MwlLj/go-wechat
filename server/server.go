@@ -108,9 +108,19 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 				return nil
 			}
 		}
-		// reply.SendMessage(msg)
 	} else {
 		// event
+		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}
+		if this.m_eventCallback != nil {
+			for {
+				event := utils.ResXml2Event(resXml)
+				err = this.m_eventCallback.OnEvent(&reply, event, this.m_eventCallbackUserdata)
+				if err != nil {
+					break
+				}
+				return nil
+			}
+		}
 	}
 	return err
 }
@@ -149,6 +159,10 @@ func (this *CServer) RegisterMsg(callback common.IMessage, userData interface{})
 
 func (this *CServer) RegisterMsgFunc(callback common.FuncMsgCallback, userData interface{}) {
 	this.RegisterMsg(&CMsgCallbackDefault{MsgCallback: callback}, userData)
+}
+
+func (this *CServer) RegisterEventFunc(callback common.FuncEventCallback, userData interface{}) {
+	this.RegisterEvent(&CEventCallbackDefault{EventCallback: callback}, userData)
 }
 
 func (this *CServer) RegisterEvent(callback common.IEvent, userData interface{}) {
