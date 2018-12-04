@@ -3,10 +3,13 @@ package template
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/communicate"
 	"net/http"
 )
+
+var _ = fmt.Println
 
 type CTemplate struct {
 	m_token common.IToken

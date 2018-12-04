@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterEventTest(wc wechat.IWeChat) {
-	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, userData interface{}) error {
+	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, communicate common.CDataCommunicate, userData interface{}) error {
 		msg := common.CMessage{}
 		msg.Content = "event: " + event.Event
 		msg.MsgType = common.MsgTypeText

@@ -20,28 +20,28 @@ func CreateMenuTest(wc wechat.IWeChat) {
 	// data
 	buttons := []common.CButton{}
 	button1 := common.CButton{}
-	button1.Name = "赞一下"
-	button1.Type = "click"
-	button1.Key = "accept"
+	button1.Name = "下单"
+	button1.Type = common.ButtonTypeClick
+	button1.Key = "order"
 	buttons = append(buttons, button1)
 	buttonSearch := common.CButton{}
 	searchButtons := []common.CButton{}
 	buttonSearch.Name = "搜索"
 	baiduSearch := common.CButton{}
 	baiduSearch.Name = "百度一下"
-	baiduSearch.Type = "view"
+	baiduSearch.Type = common.ButtonTypeView
 	baiduSearch.Url = "https://www.baidu.com"
 	searchButtons = append(searchButtons, baiduSearch)
 	sougouSearch := common.CButton{}
 	sougouSearch.Name = "搜狗搜索"
-	sougouSearch.Type = "view"
+	sougouSearch.Type = common.ButtonTypeView
 	sougouSearch.Url = "http://www.sogou.com"
 	searchButtons = append(searchButtons, sougouSearch)
 	buttonSearch.SubButton = searchButtons
 	buttons = append(buttons, buttonSearch)
 	button3 := common.CButton{}
 	button3.Name = "扫一扫"
-	button3.Type = "scancode_waitmsg"
+	button3.Type = common.ButtonTypeScancodeWaitmsg
 	button3.Key = "take_photo"
 	buttons = append(buttons, button3)
 	// create

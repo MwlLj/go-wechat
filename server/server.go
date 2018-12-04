@@ -104,7 +104,8 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 		if this.m_msgCallback != nil {
 			for {
 				msg := utils.ResXml2Message(resXml)
-				err = this.m_msgCallback.OnMessage(&reply, msg, this.m_msgCallbackUserdata)
+				communicate := utils.ResXml2DataCommunicate(resXml)
+				err = this.m_msgCallback.OnMessage(&reply, msg, *communicate, this.m_msgCallbackUserdata)
 				if err != nil {
 					break
 				}
@@ -117,7 +118,8 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 		if this.m_eventCallback != nil {
 			for {
 				event := utils.ResXml2Event(resXml)
-				err = this.m_eventCallback.OnEvent(&reply, event, this.m_eventCallbackUserdata)
+				communicate := utils.ResXml2DataCommunicate(resXml)
+				err = this.m_eventCallback.OnEvent(&reply, event, *communicate, this.m_eventCallbackUserdata)
 				if err != nil {
 					break
 				}

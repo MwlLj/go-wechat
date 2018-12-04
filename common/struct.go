@@ -20,6 +20,12 @@ var (
 	MsgTypeEvent      string = "event"
 )
 
+var (
+	ButtonTypeClick           string = "click"
+	ButtonTypeView            string = "view"
+	ButtonTypeScancodeWaitmsg string = "scancode_waitmsg"
+)
+
 type CUserInfo struct {
 	AppId     string
 	AppSecret string
@@ -62,6 +68,11 @@ type CWxResXml struct {
 	Longitude    float64       `xml:"Longitude"`
 	Precision    float64       `xml:"Precision"`
 	Status       CData         `xml:"Status"`
+}
+
+type CDataCommunicate struct {
+	ToUserName   string
+	FromUserName string
 }
 
 type CMessage struct {
@@ -127,8 +138,8 @@ type CGetIndustryInfo struct {
 type CGetIndustryResponse struct {
 	ErrCode           int              `json:"errcode"`
 	ErrMsg            string           `json:"errmsg"`
-	PrimaryIndustry   CGetIndustryInfo `json:"industry_id1"`
-	SecondaryIndustry CGetIndustryInfo `json:"industry_id2"`
+	PrimaryIndustry   CGetIndustryInfo `json:"primary_industry"`
+	SecondaryIndustry CGetIndustryInfo `json:"secondary_industry"`
 }
 
 type CGetTemplateIdRequest struct {

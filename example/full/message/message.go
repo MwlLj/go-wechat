@@ -8,7 +8,7 @@ import (
 type CMessageCallback struct {
 }
 
-func (this *CMessageCallback) OnMessage(reply common.IReply, msg *common.CMessage, userData interface{}) error {
+func (this *CMessageCallback) OnMessage(reply common.IReply, msg *common.CMessage, communicate common.CDataCommunicate, userData interface{}) error {
 	msg.Content = "hello struct"
 	reply.SendMessage(msg)
 	return nil
@@ -19,7 +19,7 @@ func RegisterMsgTest(wc wechat.IWeChat) {
 }
 
 func RegisterMsgFuncTest(wc wechat.IWeChat) {
-	wc.RegisterMsgFunc(func(reply common.IReply, msg *common.CMessage, userData interface{}) error {
+	wc.RegisterMsgFunc(func(reply common.IReply, msg *common.CMessage, communicate common.CDataCommunicate, userData interface{}) error {
 		msg.Content = "hello function"
 		reply.SendMessage(msg)
 		return nil

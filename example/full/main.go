@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"github.com/MwlLj/go-wechat"
 	"github.com/MwlLj/go-wechat/common"
-	"github.com/MwlLj/go-wechat/example/event"
-	"github.com/MwlLj/go-wechat/example/menu"
-	"github.com/MwlLj/go-wechat/example/message"
+	"github.com/MwlLj/go-wechat/example/full/event"
+	"github.com/MwlLj/go-wechat/example/full/menu"
+	"github.com/MwlLj/go-wechat/example/full/message"
+	"github.com/MwlLj/go-wechat/example/full/template"
 )
 
 var _ = fmt.Println
@@ -26,6 +27,13 @@ func menuTest(wc wechat.IWeChat) {
 	menu.GetMenuTest(wc)
 }
 
+func templateTest(wc wechat.IWeChat) {
+	// template.SetIndustryTest(wc)
+	// template.GetIndustryTest(wc)
+	// template.GetTemplateListTest(wc)
+	template.SendTemplateMsgTest(wc)
+}
+
 func main() {
 	info := common.CUserInfo{
 		AppId:     "wxfedcab8946a21ccc",
@@ -41,5 +49,7 @@ func main() {
 	eventTest(wc)
 	// menu test
 	// menuTest(wc)
+	// template test
+	templateTest(wc)
 	wc.Loop()
 }

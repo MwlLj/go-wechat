@@ -9,6 +9,20 @@ type CCommonExt struct {
 	FromUserName common.CData
 }
 
+func ResXml2DataCommunicate(resXml *common.CWxResXml) *common.CDataCommunicate {
+	communicate := common.CDataCommunicate{}
+	communicate.ToUserName = string(resXml.ToUserName)
+	communicate.FromUserName = string(resXml.FromUserName)
+	return &communicate
+}
+
+func DataCommunicate2ResXml(communicate *common.CDataCommunicate) *common.CWxResXml {
+	resXml := common.CWxResXml{}
+	resXml.ToUserName = common.CData(communicate.ToUserName)
+	resXml.FromUserName = common.CData(communicate.FromUserName)
+	return &resXml
+}
+
 func ResXml2Message(resXml *common.CWxResXml) *common.CMessage {
 	msg := common.CMessage{}
 	msg.CreateTime = resXml.CreateTime
