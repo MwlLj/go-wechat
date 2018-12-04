@@ -5,7 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/MwlLj/go-wechat/common"
+	"github.com/MwlLj/go-wechat/menu"
 	"github.com/MwlLj/go-wechat/sender"
+	"github.com/MwlLj/go-wechat/token"
 	"github.com/MwlLj/go-wechat/utils"
 	"io"
 	"io/ioutil"
@@ -19,7 +21,7 @@ type CServer struct {
 	m_exeChannel            chan bool
 	m_userInfo              common.CUserInfo
 	m_decodeFactory         CDecodeFactory
-	m_tokenSender           common.IToken
+	m_token                 common.IToken
 	m_msgCallback           common.IMessage
 	m_msgCallbackUserdata   interface{}
 	m_eventCallback         common.IEvent
@@ -27,7 +29,7 @@ type CServer struct {
 }
 
 func (this *CServer) init(info *common.CUserInfo) {
-	this.m_tokenSender = sender.NewTokenSender(info)
+	this.m_token = token.New(info)
 	this.startListen(info.Port, &info.Url)
 }
 
@@ -95,7 +97,7 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 	if resXml == nil {
 		return err
 	}
-	if string(resXml.MsgType) != WxMsgTypeEvent {
+	if string(resXml.MsgType) != common.MsgTypeEvent {
 		// message
 		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}
 		if this.m_msgCallback != nil {
@@ -168,6 +170,10 @@ func (this *CServer) RegisterEventFunc(callback common.FuncEventCallback, userDa
 func (this *CServer) RegisterEvent(callback common.IEvent, userData interface{}) {
 	this.m_eventCallback = callback
 	this.m_eventCallbackUserdata = userData
+}
+
+func (this *CServer) Menu() common.IMenu {
+	return menu.New(this.m_token)
 }
 
 func New(info *common.CUserInfo) *CServer {

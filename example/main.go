@@ -4,18 +4,12 @@ import (
 	"fmt"
 	"github.com/MwlLj/go-wechat"
 	"github.com/MwlLj/go-wechat/common"
+	"github.com/MwlLj/go-wechat/example/event"
+	"github.com/MwlLj/go-wechat/example/menu"
+	"github.com/MwlLj/go-wechat/example/message"
 )
 
 var _ = fmt.Println
-
-type CMessageCallback struct {
-}
-
-func (this *CMessageCallback) OnMessage(reply common.IReply, msg *common.CMessage, userData interface{}) error {
-	msg.Content = "hello struct"
-	reply.SendMessage(msg)
-	return nil
-}
 
 func main() {
 	info := common.CUserInfo{
@@ -26,18 +20,12 @@ func main() {
 		Token:     "c0082b4d-b46f-4d67-b0eb-7a0d15dd5ef2",
 	}
 	wc := wechat.New(&info)
-	// wc.RegisterMsg(&CMessageCallback{}, nil)
-	wc.RegisterMsgFunc(func(reply common.IReply, msg *common.CMessage, userData interface{}) error {
-		msg.Content = "hello function"
-		reply.SendMessage(msg)
-		return nil
-	}, nil)
-	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, userData interface{}) error {
-		msg := common.CMessage{}
-		msg.Content = "event: " + event.Event
-		msg.MsgType = common.MsgTypeText
-		reply.SendMessage(&msg)
-		return nil
-	}, nil)
+	// message test
+	message.RegisterMsgTest(wc)
+	message.RegisterMsgFuncTest(wc)
+	// event test
+	event.RegisterEventTest(wc)
+	// menu test
+	menu.GetMenuTest(wc)
 	wc.Loop()
 }

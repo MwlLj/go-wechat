@@ -20,12 +20,8 @@ type IToken interface {
 	UpdateToken(timeoutMS int64) (token []byte, e error)
 }
 
-type IButton interface {
-	AddSubButton(button common.IButton)
-	Data() *common.CButtonData
-}
-
 type IMenu interface {
-	AddButton(button common.IButton)
-	Create()
+	Create(data *[]CButton, timeoutMS int64) error
+	GetAll(timeoutMS int64) (*CGetMenuJson, error)
+	DeleteAll(timeoutMS int64) error
 }

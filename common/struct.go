@@ -6,6 +6,10 @@ import (
 )
 
 var (
+	ErrorCodeSuccess int = 0
+)
+
+var (
 	MsgTypeText       string = "text"
 	MsgTypeImage      string = "image"
 	MsgTypeVoice      string = "voice"
@@ -13,6 +17,7 @@ var (
 	MsgTypeShortVideo string = "shortvideo"
 	MsgTypeLocation   string = "location"
 	MsgTypeLink       string = "link"
+	MsgTypeEvent      string = "event"
 )
 
 type CUserInfo struct {
@@ -87,12 +92,22 @@ type CEvent struct {
 	Precision  float64
 }
 
-type CButtonInfo struct {
-	Type                string
-	Name                string
-	Key                 string
-	Url                 string
-	MediaId             string
-	MiniProgramAppId    string
-	MiniProgramPagePath string
+type CButton struct {
+	SubButton           []CButton `json:"sub_button"`
+	Type                string    `json:"type"`
+	Name                string    `json:"name"`
+	Key                 string    `json:"key"`
+	Url                 string    `json:"url"`
+	MediaId             string    `json:"media_id"`
+	MiniProgramAppId    string    `json:"appid"`
+	MiniProgramPagePath string    `json:"pagepath"`
+}
+
+type CGetMenuButton struct {
+	Button []CButton `json:"button"`
+}
+
+type CGetMenuJson struct {
+	Menu            CGetMenuButton `json:"menu"`
+	ConditionalMenu CGetMenuButton `json:"conditionalmenu"`
 }

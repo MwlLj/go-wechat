@@ -1,4 +1,4 @@
-package sender
+package token
 
 import (
 	"encoding/json"
@@ -13,6 +13,8 @@ import (
 type CTokenJson struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int    `json:"expires_in"`
+	ErrCode     int    `json:"errcode"`
+	ErrMsg      string `json:"errmsg"`
 }
 
 type CToken struct {
@@ -95,7 +97,7 @@ func (this *CToken) sendTokenRequest(info *common.CUserInfo) error {
 		return err
 	}
 	err = json.Unmarshal(body, &this.m_tokenJson)
-	if err != nil {
+	if err != nil || this.m_tokenJson.ErrCode != common.ErrorCodeSuccess {
 		this.m_isVaild = false
 		return err
 	}
@@ -104,7 +106,7 @@ func (this *CToken) sendTokenRequest(info *common.CUserInfo) error {
 	return nil
 }
 
-func NewTokenSender(info *common.CUserInfo) common.IToken {
+func New(info *common.CUserInfo) common.IToken {
 	t := CToken{}
 	t.init(info)
 	return &t
