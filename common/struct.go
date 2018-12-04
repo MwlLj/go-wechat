@@ -61,6 +61,7 @@ type CWxResXml struct {
 	Latitude     float64       `xml:"Latitude"`
 	Longitude    float64       `xml:"Longitude"`
 	Precision    float64       `xml:"Precision"`
+	Status       CData         `xml:"Status"`
 }
 
 type CMessage struct {
@@ -90,6 +91,7 @@ type CEvent struct {
 	Latitude   float64
 	Longitude  float64
 	Precision  float64
+	Status     string
 }
 
 type CButton struct {
@@ -110,4 +112,68 @@ type CGetMenuButton struct {
 type CGetMenuJson struct {
 	Menu            CGetMenuButton `json:"menu"`
 	ConditionalMenu CGetMenuButton `json:"conditionalmenu"`
+}
+
+type CSetIndustryRequest struct {
+	FirstIndustryId  string `json:"industry_id1"`
+	SecondIndustryId string `json:"industry_id2"`
+}
+
+type CGetIndustryInfo struct {
+	FirstClass  string `json:"first_class"`
+	SecondClass string `json:"second_class"`
+}
+
+type CGetIndustryResponse struct {
+	ErrCode           int              `json:"errcode"`
+	ErrMsg            string           `json:"errmsg"`
+	PrimaryIndustry   CGetIndustryInfo `json:"industry_id1"`
+	SecondaryIndustry CGetIndustryInfo `json:"industry_id2"`
+}
+
+type CGetTemplateIdRequest struct {
+	TemplateLibId string `json:"template_id_short"`
+}
+
+type CGetTemplateIdResponse struct {
+	ErrCode    int    `json:"errcode"`
+	ErrMsg     string `json:"errmsg"`
+	TemplateId string `json:"template_id"`
+}
+
+type CGetTemplateListInfo struct {
+	TemplateId      string `json:"template_id"`
+	Title           string `json:"title"`
+	PrimaryIndustry string `json:"primary_industry"`
+	DeputyIndustry  string `json:"deputy_industry"`
+	Content         string `json:"content"`
+	Example         string `json:"example"`
+}
+
+type CGetTemplateListResponse struct {
+	ErrCode      int                    `json:"errcode"`
+	ErrMsg       string                 `json:"errmsg"`
+	TemplateList []CGetTemplateListInfo `json:"template_list"`
+}
+
+type CDeleteTemplateRequest struct {
+	TemplateId string `json:"template_id"`
+}
+
+type CTemplateMessageItem struct {
+	Value string `json:"value"`
+	Color string `json:"color"`
+}
+
+type CSendTemplateMsgRequest struct {
+	Touser     string                          `json:"touser"`
+	TemplateId string                          `json:"template_id"`
+	Url        string                          `json:"url"`
+	Data       map[string]CTemplateMessageItem `json:"data"`
+}
+
+type CSendTemplateMsgResponse struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+	MsgId   int64  `json:"msgid"`
 }

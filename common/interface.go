@@ -25,3 +25,12 @@ type IMenu interface {
 	GetAll(timeoutMS int64) (*CGetMenuJson, error)
 	DeleteAll(timeoutMS int64) error
 }
+
+type ITemplate interface {
+	SetIndustry(request *CSetIndustryRequest, timeoutMS int64) error
+	GetIndustry(timeoutMS int64) (*CGetIndustryResponse, error)
+	GetTemplateId(request *CGetTemplateIdRequest, timeoutMS int64) (*CGetTemplateIdResponse, error)
+	GetTemplateList(timeoutMS int64) (*CGetTemplateListResponse, error)
+	DeleteTemplate(request *CDeleteTemplateRequest, timeoutMS int64) error
+	SendTemplateMsg(request *CSendTemplateMsgRequest, timeoutMS int64) (*CSendTemplateMsgResponse, error)
+}

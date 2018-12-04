@@ -61,6 +61,7 @@ func ResXml2Event(resXml *common.CWxResXml) *common.CEvent {
 	event.Latitude = resXml.Latitude
 	event.Longitude = resXml.Longitude
 	event.Precision = resXml.Precision
+	event.Status = string(resXml.Status)
 	return &event
 }
 
@@ -76,5 +77,6 @@ func Event2ResXml(event *common.CEvent, ext *CCommonExt) *common.CWxResXml {
 	resXml.Latitude = event.Latitude
 	resXml.Longitude = event.Longitude
 	resXml.Precision = event.Precision
+	resXml.Status = common.CData(event.Status)
 	return &resXml
 }

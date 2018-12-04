@@ -11,6 +11,21 @@ import (
 
 var _ = fmt.Println
 
+func messageTest(wc wechat.IWeChat) {
+	message.RegisterMsgTest(wc)
+	message.RegisterMsgFuncTest(wc)
+}
+
+func eventTest(wc wechat.IWeChat) {
+	event.RegisterEventTest(wc)
+}
+
+func menuTest(wc wechat.IWeChat) {
+	menu.DeleteMenuTest(wc)
+	menu.CreateMenuTest(wc)
+	menu.GetMenuTest(wc)
+}
+
 func main() {
 	info := common.CUserInfo{
 		AppId:     "wxfedcab8946a21ccc",
@@ -21,13 +36,10 @@ func main() {
 	}
 	wc := wechat.New(&info)
 	// message test
-	message.RegisterMsgTest(wc)
-	message.RegisterMsgFuncTest(wc)
+	messageTest(wc)
 	// event test
-	event.RegisterEventTest(wc)
+	eventTest(wc)
 	// menu test
-	menu.DeleteMenuTest(wc)
-	menu.CreateMenuTest(wc)
-	menu.GetMenuTest(wc)
+	// menuTest(wc)
 	wc.Loop()
 }
