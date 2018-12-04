@@ -97,9 +97,13 @@ func (this *CToken) sendTokenRequest(info *common.CUserInfo) error {
 		return err
 	}
 	err = json.Unmarshal(body, &this.m_tokenJson)
-	if err != nil || this.m_tokenJson.ErrCode != common.ErrorCodeSuccess {
+	if err != nil {
 		this.m_isVaild = false
 		return err
+	}
+	if this.m_tokenJson.ErrCode != common.ErrorCodeSuccess {
+		this.m_isVaild = false
+		return errors.New(this.m_tokenJson.ErrMsg)
 	}
 	this.m_isVaild = true
 	this.m_tokenVaildChannel <- true
