@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/MwlLj/go-wechat"
 	"github.com/MwlLj/go-wechat/common"
+	"time"
 )
 
 func SetIndustryTest(wc wechat.IWeChat) {
@@ -49,6 +50,11 @@ func GetTemplateListTest(wc wechat.IWeChat) {
 	fmt.Println(string(b))
 }
 
+func getNowSecondFormat() string {
+	timeUnix := time.Now().Unix()
+	return time.Unix(timeUnix, 0).Format("2006-01-02 15:04:05")
+}
+
 func SendTemplateMsgTest(wc wechat.IWeChat) {
 	tl := wc.Template()
 	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, communicate common.CDataCommunicate, userData interface{}) error {
@@ -59,6 +65,10 @@ func SendTemplateMsgTest(wc wechat.IWeChat) {
 			request.Url = "https://www.taobao.com"
 			items := make(map[string]common.CTemplateMessageItem)
 			items["first"] = common.CTemplateMessageItem{Value: "恭喜你购买成功", Color: "#173177"}
+			items["product"] = common.CTemplateMessageItem{Value: "巧克力", Color: "#173177"}
+			items["amount"] = common.CTemplateMessageItem{Value: "39.8元", Color: "#173177"}
+			items["time"] = common.CTemplateMessageItem{Value: getNowSecondFormat(), Color: "#173177"}
+			items["remark"] = common.CTemplateMessageItem{Value: "欢迎再次购买", Color: "#173177"}
 			request.Data = items
 			response, err := tl.SendTemplateMsg(&request, 3000)
 			if err != nil {
