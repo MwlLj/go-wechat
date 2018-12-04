@@ -26,6 +26,8 @@ func main() {
 	// event test
 	event.RegisterEventTest(wc)
 	// menu test
+	menu.DeleteMenuTest(wc)
+	menu.CreateMenuTest(wc)
 	menu.GetMenuTest(wc)
 	wc.Loop()
 }
