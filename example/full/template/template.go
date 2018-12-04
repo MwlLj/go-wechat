@@ -62,7 +62,7 @@ func SendTemplateMsgTest(wc wechat.IWeChat) {
 			request := common.CSendTemplateMsgRequest{}
 			request.Touser = communicate.FromUserName
 			request.TemplateId = "SOni-e9rT401RT1MiZ8gA9gPQwZImxuFduin9XMM8Ko"
-			request.Url = "http://weixin.qq.com/download"
+			request.Url = "https://www.baidu.com"
 			items := make(map[string]common.CTemplateMessageItem)
 			items["first"] = common.CTemplateMessageItem{Value: "恭喜你购买成功", Color: "#173177"}
 			items["product"] = common.CTemplateMessageItem{Value: "巧克力", Color: "#173177"}
