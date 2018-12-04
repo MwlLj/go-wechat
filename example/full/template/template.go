@@ -80,6 +80,7 @@ func SendTemplateMsgTest(wc wechat.IWeChat) {
 				fmt.Println(err)
 				return err
 			}
+			var _ = b
 			// fmt.Println(string(b))
 			reply.SendEmptyMessage()
 		}
