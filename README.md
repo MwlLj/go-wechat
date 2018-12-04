@@ -11,8 +11,9 @@ import (
 )
 
 ## sample example
+(```)
 package main
- 
+
 import (
 	"fmt"
 	"github.com/MwlLj/go-wechat"
@@ -36,6 +37,7 @@ func main() {
 	}, nil)
 	wc.Loop()
 }
+(```)
 
 ## detail example
 [address](https://github.com/MwlLj/go-wechat/tree/master/example)
