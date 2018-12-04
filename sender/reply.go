@@ -28,6 +28,18 @@ func (this *CReply) SendMessage(msg *common.CMessage) error {
 		return err
 	}
 	this.ResponseWriter.Header().Set("Content-Type", "text/xml")
-	fmt.Fprint(this.ResponseWriter, string(res))
+	_, err = fmt.Fprint(this.ResponseWriter, string(res))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (this *CReply) SendEmptyMessage() error {
+	this.ResponseWriter.WriteHeader(http.StatusOK)
+	_, err := fmt.Fprint(this.ResponseWriter, "")
+	if err != nil {
+		return err
+	}
 	return nil
 }

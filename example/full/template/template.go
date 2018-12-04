@@ -71,6 +71,7 @@ func SendTemplateMsgTest(wc wechat.IWeChat) {
 			return err
 		}
 		fmt.Println(string(b))
+		reply.SendEmptyMessage()
 		return nil
 	}, nil)
 }

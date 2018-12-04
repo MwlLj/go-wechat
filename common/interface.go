@@ -13,6 +13,7 @@ type IMessage interface {
 
 type IReply interface {
 	SendMessage(msg *CMessage) error
+	SendEmptyMessage() error
 }
 
 type IToken interface {
