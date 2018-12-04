@@ -13,6 +13,7 @@ type CReply struct {
 	ToUserName     common.CData
 	FromUserName   common.CData
 	ResponseWriter http.ResponseWriter
+	m_isSend       bool
 }
 
 func (this *CReply) SendMessage(msg *common.CMessage) error {
@@ -32,6 +33,7 @@ func (this *CReply) SendMessage(msg *common.CMessage) error {
 	if err != nil {
 		return err
 	}
+	this.m_isSend = true
 	return nil
 }
 
@@ -40,5 +42,20 @@ func (this *CReply) SendEmptyMessage() error {
 	if err != nil {
 		return err
 	}
+	this.m_isSend = true
 	return nil
+}
+
+func (this *CReply) IsSend() bool {
+	return this.m_isSend
+}
+
+func NewReply(toUserName *common.CData, fromUserName *common.CData, w *http.ResponseWriter) common.IReply {
+	reply := CReply{
+		ToUserName:     *toUserName,
+		FromUserName:   *fromUserName,
+		ResponseWriter: *w,
+		m_isSend:       false,
+	}
+	return &reply
 }

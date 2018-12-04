@@ -14,6 +14,7 @@ type IMessage interface {
 type IReply interface {
 	SendMessage(msg *CMessage) error
 	SendEmptyMessage() error
+	IsSend() bool
 }
 
 type IToken interface {

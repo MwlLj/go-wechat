@@ -58,6 +58,7 @@ func getNowSecondFormat() string {
 func SendTemplateMsgTest(wc wechat.IWeChat) {
 	tl := wc.Template()
 	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, communicate common.CDataCommunicate, userData interface{}) error {
+		fmt.Println("[DEBUG] event callback")
 		if event.EventKey == "order" {
 			request := common.CSendTemplateMsgRequest{}
 			request.Touser = communicate.FromUserName
@@ -82,7 +83,7 @@ func SendTemplateMsgTest(wc wechat.IWeChat) {
 			}
 			var _ = b
 			// fmt.Println(string(b))
-			reply.SendEmptyMessage()
+			// reply.SendEmptyMessage()
 		}
 		return nil
 	}, nil)

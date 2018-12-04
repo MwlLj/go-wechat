@@ -100,28 +100,34 @@ func (this *CServer) handlePost(w http.ResponseWriter, r *http.Request) error {
 	}
 	if string(resXml.MsgType) != common.MsgTypeEvent {
 		// message
-		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}
+		reply := sender.NewReply(&resXml.ToUserName, &resXml.FromUserName, &w)
 		if this.m_msgCallback != nil {
 			for {
 				msg := utils.ResXml2Message(resXml)
 				communicate := utils.ResXml2DataCommunicate(resXml)
-				err = this.m_msgCallback.OnMessage(&reply, msg, *communicate, this.m_msgCallbackUserdata)
+				err = this.m_msgCallback.OnMessage(reply, msg, *communicate, this.m_msgCallbackUserdata)
 				if err != nil {
 					break
+				}
+				if reply.IsSend() == false {
+					reply.SendEmptyMessage()
 				}
 				return nil
 			}
 		}
 	} else {
 		// event
-		reply := sender.CReply{ResponseWriter: w, ToUserName: resXml.ToUserName, FromUserName: resXml.FromUserName}
+		reply := sender.NewReply(&resXml.ToUserName, &resXml.FromUserName, &w)
 		if this.m_eventCallback != nil {
 			for {
 				event := utils.ResXml2Event(resXml)
 				communicate := utils.ResXml2DataCommunicate(resXml)
-				err = this.m_eventCallback.OnEvent(&reply, event, *communicate, this.m_eventCallbackUserdata)
+				err = this.m_eventCallback.OnEvent(reply, event, *communicate, this.m_eventCallbackUserdata)
 				if err != nil {
 					break
+				}
+				if reply.IsSend() == false {
+					reply.SendEmptyMessage()
 				}
 				return nil
 			}
