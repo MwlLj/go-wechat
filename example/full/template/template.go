@@ -52,26 +52,27 @@ func GetTemplateListTest(wc wechat.IWeChat) {
 func SendTemplateMsgTest(wc wechat.IWeChat) {
 	tl := wc.Template()
 	wc.RegisterEventFunc(func(reply common.IReply, event *common.CEvent, communicate common.CDataCommunicate, userData interface{}) error {
-		fmt.Println("[DEBUG] event key:", event.EventKey)
-		request := common.CSendTemplateMsgRequest{}
-		request.Touser = communicate.FromUserName
-		request.TemplateId = "SOni-e9rT401RT1MiZ8gA9gPQwZImxuFduin9XMM8Ko"
-		request.Url = "https://www.taobao.com"
-		items := make(map[string]common.CTemplateMessageItem)
-		items["first"] = common.CTemplateMessageItem{Value: "恭喜你购买成功", Color: "#173177"}
-		request.Data = items
-		response, err := tl.SendTemplateMsg(&request, 3000)
-		if err != nil {
-			fmt.Println(err)
-			return err
+		if event.EventKey == "order" {
+			request := common.CSendTemplateMsgRequest{}
+			request.Touser = communicate.FromUserName
+			request.TemplateId = "SOni-e9rT401RT1MiZ8gA9gPQwZImxuFduin9XMM8Ko"
+			request.Url = "https://www.taobao.com"
+			items := make(map[string]common.CTemplateMessageItem)
+			items["first"] = common.CTemplateMessageItem{Value: "恭喜你购买成功", Color: "#173177"}
+			request.Data = items
+			response, err := tl.SendTemplateMsg(&request, 3000)
+			if err != nil {
+				fmt.Println(err)
+				return err
+			}
+			b, err := json.Marshal(response)
+			if err != nil {
+				fmt.Println(err)
+				return err
+			}
+			fmt.Println(string(b))
+			reply.SendEmptyMessage()
 		}
-		b, err := json.Marshal(response)
-		if err != nil {
-			fmt.Println(err)
-			return err
-		}
-		fmt.Println(string(b))
-		reply.SendEmptyMessage()
 		return nil
 	}, nil)
 }

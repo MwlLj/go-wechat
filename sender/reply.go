@@ -36,7 +36,6 @@ func (this *CReply) SendMessage(msg *common.CMessage) error {
 }
 
 func (this *CReply) SendEmptyMessage() error {
-	this.ResponseWriter.WriteHeader(http.StatusOK)
 	_, err := fmt.Fprint(this.ResponseWriter, "")
 	if err != nil {
 		return err
