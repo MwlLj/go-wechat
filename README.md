@@ -38,7 +38,7 @@
 	}
 
 ## detail example
-[address](https://github.com/MwlLj/go-wechat/tree/master/example)
+[address](https://github.com/MwlLj/go-wechat/tree/master/example/full)
 
 ### 微信公众号测试帐号开发流程
 	1. 进入 https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
