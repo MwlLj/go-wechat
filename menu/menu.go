@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/MwlLj/go-wechat/common"
-	"io/ioutil"
+	"github.com/MwlLj/go-wechat/communicate"
 	"net/http"
-	"strings"
 )
 
 type CCommonResponse struct {
@@ -18,33 +17,6 @@ type CMenu struct {
 	m_token common.IToken
 }
 
-func (this *CMenu) send(timeoutMS int64, url *string, method *string, payload []byte) (resBody []byte, e error) {
-	var err error = nil
-	token, err := this.m_token.GetToken(timeoutMS)
-	if err != nil {
-		return nil, err
-	}
-	var req *http.Request = nil
-	if payload == nil {
-		req, err = http.NewRequest(*method, *url, nil)
-	} else {
-		reader := strings.NewReader(string(payload))
-		req, err = http.NewRequest(*method, *url, reader)
-	}
-	if err != nil {
-		return nil, err
-	}
-	values := req.URL.Query()
-	values.Add(AccessToken, string(token))
-	req.URL.RawQuery = values.Encode()
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	return ioutil.ReadAll(res.Body)
-}
-
 func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 	menu := CMenuData{Buttons: *data}
 	b, err := json.Marshal(&menu)
@@ -52,7 +24,7 @@ func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 		return err
 	}
 	method := http.MethodPost
-	body, err := this.send(timeoutMS, &CreateMenuUrl, &method, b)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateMenuUrl, &method, b)
 	if err != nil {
 		return err
 	}
@@ -69,7 +41,7 @@ func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 
 func (this *CMenu) GetAll(timeoutMS int64) (*common.CGetMenuJson, error) {
 	method := http.MethodGet
-	body, err := this.send(timeoutMS, &GetMenuUrl, &method, nil)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetMenuUrl, &method, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +55,7 @@ func (this *CMenu) GetAll(timeoutMS int64) (*common.CGetMenuJson, error) {
 
 func (this *CMenu) DeleteAll(timeoutMS int64) error {
 	method := http.MethodGet
-	body, err := this.send(timeoutMS, &DeleteMenuUrl, &method, nil)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteMenuUrl, &method, nil)
 	if err != nil {
 		return err
 	}
