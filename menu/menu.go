@@ -2,6 +2,7 @@ package menu
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/MwlLj/go-wechat/common"
 	"io/ioutil"
 	"net/http"
@@ -57,8 +58,11 @@ func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 	}
 	response := CCommonResponse{}
 	err = json.Unmarshal(body, &response)
-	if err != nil || response.ErrCode != common.ErrorCodeSuccess {
+	if err != nil {
 		return err
+	}
+	if response.ErrCode != common.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
 	}
 	return nil
 }
@@ -85,8 +89,11 @@ func (this *CMenu) DeleteAll(timeoutMS int64) error {
 	}
 	response := CCommonResponse{}
 	err = json.Unmarshal(body, &response)
-	if err != nil || response.ErrCode != common.ErrorCodeSuccess {
+	if err != nil {
 		return err
+	}
+	if response.ErrCode != common.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
 	}
 	return nil
 }
