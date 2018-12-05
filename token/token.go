@@ -20,7 +20,6 @@ type CTokenJson struct {
 type CToken struct {
 	m_tokenJson          CTokenJson
 	m_isVaild            bool
-	m_tokenVaildChannel  chan bool
 	m_updateTokenChannel chan bool
 }
 
@@ -30,11 +29,20 @@ func (this *CToken) GetToken(timeoutMS int64) (token []byte, e error) {
 		if timeoutMS <= 0 {
 			return nil, errors.New("token is vaild")
 		} else {
-			select {
-			case <-this.m_tokenVaildChannel:
-				isTimeout = false
-			case <-time.After(time.Duration(timeoutMS) * time.Millisecond):
-				isTimeout = true
+			t := time.After(time.Duration(timeoutMS) * time.Millisecond)
+		end:
+			for {
+				if this.m_isVaild == true {
+					isTimeout = false
+					break end
+				}
+				select {
+				case <-t:
+					isTimeout = true
+					break end
+				default:
+				}
+				time.Sleep(100 * time.Millisecond)
 			}
 		}
 	}
@@ -52,7 +60,6 @@ func (this *CToken) UpdateToken(timeoutMS int64) (token []byte, e error) {
 
 func (this *CToken) init(info *common.CUserInfo) {
 	this.m_updateTokenChannel = make(chan bool, 1)
-	this.m_tokenVaildChannel = make(chan bool, 1)
 	this.m_isVaild = false
 	go func() {
 		for {
@@ -106,7 +113,6 @@ func (this *CToken) sendTokenRequest(info *common.CUserInfo) error {
 		return errors.New(this.m_tokenJson.ErrMsg)
 	}
 	this.m_isVaild = true
-	this.m_tokenVaildChannel <- true
 	return nil
 }
 
