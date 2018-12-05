@@ -7,22 +7,6 @@ import (
 	"github.com/MwlLj/go-wechat/common"
 )
 
-func UploadImageTest(wc wechat.IWeChat) {
-	st := wc.Store()
-	path := "./testresource/test.jpg"
-	res, err := st.UploadImage(&path, 3000)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	b, err := json.Marshal(res)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(string(b))
-}
-
 func CreateStoreTest(wc wechat.IWeChat) {
 	st := wc.Store()
 	request := common.CCreateStoreRequest{}

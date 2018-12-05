@@ -13,22 +13,6 @@ type CStore struct {
 	m_token common.IToken
 }
 
-func (this *CStore) UploadImage(path *string, timeoutMS int64) (*common.CUploadImageResponse, error) {
-	resBody, err := communicate.UploadFileWithToken(this.m_token, timeoutMS, &UploadImageFormname, path, &UploadImageUrl)
-	if err != nil {
-		return nil, err
-	}
-	response := common.CUploadImageResponse{}
-	err = json.Unmarshal(resBody, &response)
-	if err != nil {
-		return nil, err
-	}
-	if response.ErrCode != private.ErrorCodeSuccess {
-		return nil, errors.New(response.ErrMsg)
-	}
-	return &response, nil
-}
-
 func (this *CStore) CreateStore(request *common.CCreateStoreRequest, timeoutMS int64) error {
 	b, err := json.Marshal(request)
 	if err != nil {

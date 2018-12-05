@@ -5,6 +5,7 @@ import (
 	"github.com/MwlLj/go-wechat"
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/example/full/event"
+	"github.com/MwlLj/go-wechat/example/full/material"
 	"github.com/MwlLj/go-wechat/example/full/menu"
 	"github.com/MwlLj/go-wechat/example/full/message"
 	"github.com/MwlLj/go-wechat/example/full/store"
@@ -35,8 +36,13 @@ func templateTest(wc wechat.IWeChat) {
 	template.SendTemplateMsgTest(wc)
 }
 
+func materialTest(wc wechat.IWeChat) {
+	material.UploadImageTest(wc)
+}
+
 func storeTest(wc wechat.IWeChat) {
-	store.UploadImageTest(wc)
+	// store.UploadImageTest(wc)
+	store.CreateStoreTest(wc)
 }
 
 func main() {
@@ -56,7 +62,9 @@ func main() {
 	// menuTest(wc)
 	// template test
 	templateTest(wc)
+	// material test
+	materialTest(wc)
 	// store test
-	storeTest(wc)
+	// storeTest(wc)
 	wc.Loop()
 }

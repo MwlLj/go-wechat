@@ -1,10 +1,6 @@
 package store
 
 var (
-	UploadImageFormname string = "media"
-)
-
-var (
 	UploadImageUrl  string = "https://api.weixin.qq.com/cgi-bin/media/uploadimg"
 	CreateStoreUrl  string = "https://api.weixin.qq.com/cgi-bin/poi/addpoi"
 	GetStoreUrl     string = "https://api.weixin.qq.com/cgi-bin/poi/getpoi"

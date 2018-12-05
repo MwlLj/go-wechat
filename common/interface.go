@@ -37,8 +37,11 @@ type ITemplate interface {
 	SendTemplateMsg(request *CSendTemplateMsgRequest, timeoutMS int64) (*CSendTemplateMsgResponse, error)
 }
 
-type IStore interface {
+type IMaterial interface {
 	UploadImage(path *string, timeoutMS int64) (*CUploadImageResponse, error)
+}
+
+type IStore interface {
 	CreateStore(request *CCreateStoreRequest, timeoutMS int64) error
 	GetStore(request *CGetStoreRequest, timeoutMS int64) (*CGetStoreResponse, error)
 	GetStoreList(request *CGetStoreListRequest, timeoutMS int64) (*CGetStoreListResponse, error)
