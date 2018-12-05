@@ -65,6 +65,6 @@ func main() {
 	// material test
 	// materialTest(wc)
 	// store test
-	storeTest(wc)
+	// storeTest(wc)
 	wc.Loop()
 }

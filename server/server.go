@@ -11,6 +11,7 @@ import (
 	"github.com/MwlLj/go-wechat/store"
 	"github.com/MwlLj/go-wechat/template"
 	"github.com/MwlLj/go-wechat/token"
+	"github.com/MwlLj/go-wechat/user"
 	"github.com/MwlLj/go-wechat/utils"
 	"io"
 	"io/ioutil"
@@ -193,6 +194,10 @@ func (this *CServer) Template() common.ITemplate {
 
 func (this *CServer) Material() common.IMaterial {
 	return material.New(this.m_token)
+}
+
+func (this *CServer) User() common.IUser {
+	return user.New(this.m_token)
 }
 
 func (this *CServer) Store() common.IStore {

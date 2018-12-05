@@ -9,6 +9,7 @@ type IWeChat interface {
 	Menu() common.IMenu
 	Template() common.ITemplate
 	Material() common.IMaterial
+	User() common.IUser
 	Store() common.IStore
 	RegisterEvent(callback common.IEvent, userData interface{})
 	RegisterEventFunc(callback common.FuncEventCallback, userData interface{})

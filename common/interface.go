@@ -41,6 +41,9 @@ type IMaterial interface {
 	UploadImage(path *string, timeoutMS int64) (*CUploadImageResponse, error)
 }
 
+type IUser interface {
+}
+
 type IStore interface {
 	CreateStore(request *CCreateStoreRequest, timeoutMS int64) error
 	GetStore(request *CGetStoreRequest, timeoutMS int64) (*CGetStoreResponse, error)

@@ -271,3 +271,62 @@ type CGetCategoryResponse struct {
 	ErrMsg       string   `json:"errmsg"`
 	CategoryList []string `json:"category_list"`
 }
+
+// user mgr
+type CTag struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+type CTagName struct {
+	Name string `json:"name"`
+}
+
+type CUserTag struct {
+	Id    int64  `json:"id"`
+	Name  string `json:"name"`
+	Count int64  `json:"count"`
+}
+
+type CCreateTagRequest struct {
+	Tag CTagName `json:"tag"`
+}
+
+type CCreateStoreResponse struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+	Tag     CTag   `json:"tag"`
+}
+
+type CGetTagListResponse struct {
+	ErrCode int        `json:"errcode"`
+	ErrMsg  string     `json:"errmsg"`
+	Tags    []CUserTag `json:"tags"`
+}
+
+type CUpdateTagRequest struct {
+	Tag CTag `json:"tag"`
+}
+
+type CDeleteTagRequest struct {
+	Tag CTag `json:"tag"`
+}
+
+type CGetTagUserListRequest struct {
+	TagId      int64  `json:tagid"`
+	NextOpenid string `json:"next_openid"`
+}
+
+type CGetTagUserListResponseData struct {
+	OpenId []string `json:"openid"`
+}
+
+type CGetTagUserListResponse struct {
+	Count      int64                       `json:"count"`
+	Data       CGetTagUserListResponseData `json:"data"`
+	NextOpenid string                      `json:"next_openid"`
+}
+
+// AddTagToUsers
+// DeleteTagToUsers
+// GetTagsByUser
