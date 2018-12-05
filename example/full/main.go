@@ -63,8 +63,8 @@ func main() {
 	// template test
 	templateTest(wc)
 	// material test
-	materialTest(wc)
+	// materialTest(wc)
 	// store test
-	// storeTest(wc)
+	storeTest(wc)
 	wc.Loop()
 }

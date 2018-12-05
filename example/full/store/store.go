@@ -9,7 +9,8 @@ import (
 
 func CreateStoreTest(wc wechat.IWeChat) {
 	st := wc.Store()
-	request := common.CCreateStoreRequest{}
+	info := common.CStoreBaseInfo{}
+	request := common.CCreateStoreRequest{Business: common.CStoreBusiness{BaseInfo: info}}
 	err := st.CreateStore(&request, 3000)
 	if err != nil {
 		fmt.Println(err)
