@@ -25,7 +25,7 @@ func PicturePath2Stream(path *string, callback PicturePath2StreamCallback) error
 	for {
 		buf := make([]byte, 1024)
 		n, err := reader.Read(buf)
-		if err != nil {
+		if err != nil && err.Error() != "EOF" {
 			return err
 		}
 		if n == 0 {

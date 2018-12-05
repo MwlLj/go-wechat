@@ -7,6 +7,7 @@ import (
 	"github.com/MwlLj/go-wechat/example/full/event"
 	"github.com/MwlLj/go-wechat/example/full/menu"
 	"github.com/MwlLj/go-wechat/example/full/message"
+	"github.com/MwlLj/go-wechat/example/full/store"
 	"github.com/MwlLj/go-wechat/example/full/template"
 )
 
@@ -34,6 +35,10 @@ func templateTest(wc wechat.IWeChat) {
 	template.SendTemplateMsgTest(wc)
 }
 
+func storeTest(wc wechat.IWeChat) {
+	store.UploadImageTest(wc)
+}
+
 func main() {
 	info := common.CUserInfo{
 		AppId:     "wxfedcab8946a21ccc",
@@ -51,5 +56,7 @@ func main() {
 	// menuTest(wc)
 	// template test
 	templateTest(wc)
+	// store test
+	storeTest(wc)
 	wc.Loop()
 }

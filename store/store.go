@@ -1,13 +1,11 @@
 package store
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/communicate"
 	"github.com/MwlLj/go-wechat/private"
-	"github.com/MwlLj/go-wechat/utils"
 	"net/http"
 )
 
@@ -15,25 +13,20 @@ type CStore struct {
 	m_token common.IToken
 }
 
-func (this *CStore) UploadImage(path *string, timeoutMS int64) error {
-	var stream []byte
-	return utils.PicturePath2Stream(path, func(buf []byte) {
-		stream = bytes.Join([][]byte{stream, buf}, []byte(""))
-	})
-	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UploadImageUrl, &method, stream)
+func (this *CStore) UploadImage(path *string, timeoutMS int64) (*common.CUploadImageResponse, error) {
+	resBody, err := communicate.UploadFileWithToken(this.m_token, timeoutMS, &UploadImageFormname, path, &UploadImageUrl)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	response := private.CCommonResponse{}
+	response := common.CUploadImageResponse{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if response.ErrCode != private.ErrorCodeSuccess {
-		return errors.New(response.ErrMsg)
+		return nil, errors.New(response.ErrMsg)
 	}
-	return nil
+	return &response, nil
 }
 
 func (this *CStore) CreateStore(request *common.CCreateStoreRequest, timeoutMS int64) error {

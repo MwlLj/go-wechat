@@ -190,6 +190,16 @@ type CSendTemplateMsgResponse struct {
 	MsgId   int64  `json:"msgid"`
 }
 
+type CUploadImageRequest struct {
+	Media []byte `json:"media"`
+}
+
+type CUploadImageResponse struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+	Url     string `json:"url"`
+}
+
 type CStorePhotoUrl struct {
 	PhotoUrl string `json:"photo_url"`
 }

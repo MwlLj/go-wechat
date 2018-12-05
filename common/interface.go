@@ -38,7 +38,7 @@ type ITemplate interface {
 }
 
 type IStore interface {
-	UploadImage(path *string, timeoutMS int64) error
+	UploadImage(path *string, timeoutMS int64) (*CUploadImageResponse, error)
 	CreateStore(request *CCreateStoreRequest, timeoutMS int64) error
 	GetStore(request *CGetStoreRequest, timeoutMS int64) (*CGetStoreResponse, error)
 	GetStoreList(request *CGetStoreListRequest, timeoutMS int64) (*CGetStoreListResponse, error)
