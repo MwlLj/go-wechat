@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	ErrorCodeSuccess int = 0
+	ErrorCodeSuccess      int = 0
+	ErrorCodeTokenInvaild int = 40001
 )
 
 var (
@@ -187,4 +188,76 @@ type CSendTemplateMsgResponse struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 	MsgId   int64  `json:"msgid"`
+}
+
+type CStorePhotoUrl struct {
+	PhotoUrl string `json:"photo_url"`
+}
+
+type CStoreBaseInfo struct {
+	Sid            string           `json:"sid"`
+	BusinessName   string           `json:"business_name"`
+	BranchName     string           `json:"branch_name"`
+	Province       string           `json:"province"`
+	City           string           `json:"city"`
+	District       string           `json:"district"`
+	Address        string           `json:"address"`
+	Telephone      string           `json:"telephone"`
+	Categories     []string         `json:"categories"`
+	OffsetType     int              `json:"offset_type"`
+	Longitude      float64          `json:"longitude"`
+	Latitude       float64          `json:"latitude"`
+	PhotoList      []CStorePhotoUrl `json:"photo_list"`
+	Recommend      string           `json:"recommend"`
+	Special        string           `json:"special"`
+	Introduction   string           `json:"introduction"`
+	OpenTime       string           `json:"open_time"`
+	AvgPrice       int              `json:"avg_price"`
+	AvailableState int              `json:"available_state'`
+	UpdateStatus   int              `json:"update_status"`
+	PoiId          string           `json:"poi_id"`
+}
+
+type CStoreBusiness struct {
+	BaseInfo CStoreBaseInfo `json:"base_info"`
+}
+
+type CCreateStoreRequest struct {
+	Business CStoreBusiness `json:"business"`
+}
+
+type CGetStoreRequest struct {
+	PoiId string `json:"poi_id"`
+}
+
+type CGetStoreResponse struct {
+	ErrCode  int            `json:"errcode"`
+	ErrMsg   string         `json:"errmsg"`
+	Business CStoreBusiness `json:"business"`
+}
+
+type CGetStoreListRequest struct {
+	Begin int `json:"begin"`
+	Limit int `json:"limit"`
+}
+
+type CGetStoreListResponse struct {
+	ErrCode      int              `json:"errcode"`
+	ErrMsg       string           `json:"errmsg"`
+	BusinessList []CStoreBusiness `json:"business_list"`
+	TotalCount   string           `json:"total_count"`
+}
+
+type CModifyStoreRequest struct {
+	Business CStoreBusiness `json:"business"`
+}
+
+type CDeleteStoreRequest struct {
+	PoiId string `json:"poi_id"`
+}
+
+type CGetCategoryResponse struct {
+	ErrCode      int      `json:"errcode"`
+	ErrMsg       string   `json:"errmsg"`
+	CategoryList []string `json:"category_list"`
 }

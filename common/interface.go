@@ -36,3 +36,13 @@ type ITemplate interface {
 	DeleteTemplate(request *CDeleteTemplateRequest, timeoutMS int64) error
 	SendTemplateMsg(request *CSendTemplateMsgRequest, timeoutMS int64) (*CSendTemplateMsgResponse, error)
 }
+
+type IStore interface {
+	UploadImage(path *string, timeoutMS int64) error
+	CreateStore(request *CCreateStoreRequest, timeoutMS int64) error
+	GetStore(request *CGetStoreRequest, timeoutMS int64) (*CGetStoreResponse, error)
+	GetStoreList(request *CGetStoreListRequest, timeoutMS int64) (*CGetStoreListResponse, error)
+	ModifyStore(request *CModifyStoreRequest, timeoutMS int64) error
+	DeleteStore(request *CDeleteStoreRequest, timeoutMS int64) error
+	GetCategory(timeoutMS int64) (*CGetCategoryResponse, error)
+}

@@ -7,6 +7,7 @@ import (
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/menu"
 	"github.com/MwlLj/go-wechat/sender"
+	"github.com/MwlLj/go-wechat/store"
 	"github.com/MwlLj/go-wechat/template"
 	"github.com/MwlLj/go-wechat/token"
 	"github.com/MwlLj/go-wechat/utils"
@@ -187,6 +188,10 @@ func (this *CServer) Menu() common.IMenu {
 
 func (this *CServer) Template() common.ITemplate {
 	return template.New(this.m_token)
+}
+
+func (this *CServer) Store() common.IStore {
+	return store.New(this.m_token)
 }
 
 func New(info *common.CUserInfo) *CServer {
