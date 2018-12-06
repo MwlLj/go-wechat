@@ -42,6 +42,14 @@ type IMaterial interface {
 }
 
 type IUser interface {
+	CreateTag(request *CCreateTagRequest, timeoutMS int64) (*CCreateTagResponse, error)
+	GetTagList(timeoutMS int64) (*CGetTagListResponse, error)
+	UpdateTag(request *CUpdateTagRequest, timeoutMS int64) error
+	DeleteTag(request *CDeleteTagRequest, timeoutMS int64) error
+	GetTagUserList(request *CGetTagUserListRequest, timeoutMS int64) (*CGetTagUserListResponse, error)
+	AddTagToUsers(request *CAddTagToUsersRequest, timeoutMS int64) error
+	DeleteTagToUsers(request *CDeleteTagToUsersRequest, timeoutMS int64) error
+	GetTagsByUser(request *CGetTagsByUserRequest, timeoutMS int64) (*CGetTagsByUserResponse, error)
 }
 
 type IStore interface {

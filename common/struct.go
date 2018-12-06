@@ -292,7 +292,7 @@ type CCreateTagRequest struct {
 	Tag CTagName `json:"tag"`
 }
 
-type CCreateStoreResponse struct {
+type CCreateTagResponse struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 	Tag     CTag   `json:"tag"`
@@ -322,11 +322,29 @@ type CGetTagUserListResponseData struct {
 }
 
 type CGetTagUserListResponse struct {
+	ErrCode    int                         `json:"errcode"`
+	ErrMsg     string                      `json:"errmsg"`
 	Count      int64                       `json:"count"`
 	Data       CGetTagUserListResponseData `json:"data"`
 	NextOpenid string                      `json:"next_openid"`
 }
 
-// AddTagToUsers
-// DeleteTagToUsers
-// GetTagsByUser
+type CAddTagToUsersRequest struct {
+	OpenIdList []string `json:"openid_list"`
+	TagId      int64    `json:"tagid"`
+}
+
+type CDeleteTagToUsersRequest struct {
+	OpenIdList []string `json:"openid_list"`
+	TagId      int64    `json:"tagid"`
+}
+
+type CGetTagsByUserRequest struct {
+	OpenId string `json:"openid"`
+}
+
+type CGetTagsByUserResponse struct {
+	ErrCode   int      `json:"errcode"`
+	ErrMsg    string   `json:"errmsg"`
+	TagidList []string `json:"tagid_list"`
+}
