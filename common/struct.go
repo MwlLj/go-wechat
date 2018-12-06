@@ -348,3 +348,79 @@ type CGetTagsByUserResponse struct {
 	ErrMsg    string   `json:"errmsg"`
 	TagidList []string `json:"tagid_list"`
 }
+
+type CUpdateUserRemarkRequest struct {
+	OpenId string `json:"openid"`
+	Remark string `json:"remark"`
+}
+
+type CGetUserBaseInfoResponse struct {
+	ErrCode        int    `json:"errcode"`
+	ErrMsg         string `json:"errmsg"`
+	Subscribe      int    `json:"subscribe"`
+	Openid         string `json:"openid"`
+	Nickname       string `json:"nickname"`
+	Sex            int    `json:"sex"`
+	Language       string `json:"language"`
+	City           string `json:"city"`
+	Province       string `json:"province"`
+	Country        string `json:"country"`
+	HeadImgUrl     string `json:"headimgurl"`
+	SubscribeTime  int64  `json:"subscribe_time"`
+	UnionId        string `json:"unionid"`
+	Remark         string `json:"remark"`
+	GroupId        int    `json:"groupid"`
+	TagidList      []int  `json:"tagid_list"`
+	SubscribeScene string `json:"subscribe_scene"`
+	QrScene        uint64 `json:"qr_scene"`
+	QrSceneStr     string `json:"qr_scene_str"`
+}
+
+type CUserInfoMultiQuery struct {
+	OpenId string `json:"openid"`
+	Lang   string `json:"lang"`
+}
+
+type CGetUserBaseInfoMultiRequest struct {
+	UserList []CUserInfoMultiQuery `json:"user_list"`
+}
+
+type CUserBaseInfo struct {
+	Subscribe      int    `json:"subscribe"`
+	Openid         string `json:"openid"`
+	Nickname       string `json:"nickname"`
+	Sex            int    `json:"sex"`
+	Language       string `json:"language"`
+	City           string `json:"city"`
+	Province       string `json:"province"`
+	Country        string `json:"country"`
+	HeadImgUrl     string `json:"headimgurl"`
+	SubscribeTime  int64  `json:"subscribe_time"`
+	UnionId        string `json:"unionid"`
+	Remark         string `json:"remark"`
+	GroupId        int    `json:"groupid"`
+	TagidList      []int  `json:"tagid_list"`
+	SubscribeScene string `json:"subscribe_scene"`
+	QrScene        uint64 `json:"qr_scene"`
+	QrSceneStr     string `json:"qr_scene_str"`
+}
+
+type CGetUserBaseInfoMultiResponse struct {
+	ErrCode      int             `json:"errcode"`
+	ErrMsg       string          `json:"errmsg"`
+	UserInfoList []CUserBaseInfo `json:"user_info_list"`
+}
+
+type CFollowUserInfo struct {
+	OpenId []string `json:"openid"`
+}
+
+// is NextOpenId is "" -> over
+type CGetFollowUsersRequest struct {
+	ErrCode    int             `json:"errcode"`
+	ErrMsg     string          `json:"errmsg"`
+	Total      int             `json:"total"`
+	Count      int             `json:"count"`
+	Data       CFollowUserInfo `json:"data"`
+	NextOpenId string          `json:"next_openid"`
+}
