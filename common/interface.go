@@ -54,6 +54,9 @@ type IUser interface {
 	GetUserBaseInfo(request *CGetUserBaseInfoRequest, timeoutMS int64) (*CGetUserBaseInfoResponse, error)
 	GetUserBaseInfoMulti(request *CGetUserBaseInfoMultiRequest, timeoutMS int64) (*CGetUserBaseInfoMultiResponse, error)
 	GetFollowUsers(timeoutMS int64) (*CGetFollowUsersResponse, error)
+	GetBlackListUsers(timeoutMS int64) (*CGetBlackListUsersResponse, error)
+	TakeUsersToBlackList(request *CTakeUsersToBlackListRequest, timeoutMS int64) error
+	UnTakeUsersToBlackList(request *CUnTakeUsersToBlackListRequest, timeoutMS int64) error
 }
 
 type IStore interface {

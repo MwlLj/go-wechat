@@ -1,15 +1,19 @@
 package user
 
-type CFollowUserInfo struct {
+type CUserOpenIdInfo struct {
 	OpenId []string `json:"openid"`
 }
 
 // is NextOpenId is "" -> over
-type CSingleFollowUsers struct {
+type CSingleUsers struct {
 	ErrCode    int             `json:"errcode"`
 	ErrMsg     string          `json:"errmsg"`
 	Total      int             `json:"total"`
 	Count      int             `json:"count"`
-	Data       CFollowUserInfo `json:"data"`
+	Data       CUserOpenIdInfo `json:"data"`
 	NextOpenId string          `json:"next_openid"`
+}
+
+type CGetBlackListSingle struct {
+	BeginOpenId string `json:"begin_openid"`
 }

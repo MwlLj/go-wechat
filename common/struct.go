@@ -22,6 +22,11 @@ var (
 )
 
 var (
+	// position event
+	EventTypeLocation string = "LOCATION"
+)
+
+var (
 	ButtonTypeClick           string = "click"
 	ButtonTypeView            string = "view"
 	ButtonTypeScancodeWaitmsg string = "scancode_waitmsg"
@@ -418,4 +423,16 @@ type CGetUserBaseInfoMultiResponse struct {
 
 type CGetFollowUsersResponse struct {
 	OpenIds []string
+}
+
+type CGetBlackListUsersResponse struct {
+	OpenIds []string
+}
+
+type CTakeUsersToBlackListRequest struct {
+	OpenIdList []string `json:"openid_list"`
+}
+
+type CUnTakeUsersToBlackListRequest struct {
+	OpenIdList []string `json:"openid_list"`
 }

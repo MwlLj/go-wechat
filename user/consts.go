@@ -22,4 +22,8 @@ var (
 	GetUserBaseInfoMultiUrl string = "https://api.weixin.qq.com/cgi-bin/user/info/batchget"
 
 	GetFollowUsersUrl string = "https://api.weixin.qq.com/cgi-bin/user/get"
+
+	GetBlackListUsersUrl      string = "https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist"
+	TakeUsersToBlackListUrl   string = "https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist"
+	UnTakeUsersToBlackListUrl string = "https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist"
 )

@@ -247,7 +247,7 @@ func (this *CUser) getFollowUserOnce(nextOpenId *string, openIds *[]string, time
 	if err != nil {
 		return err
 	}
-	response := CSingleFollowUsers{}
+	response := CSingleUsers{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
 		return err
@@ -270,7 +270,7 @@ func (this *CUser) GetFollowUsers(timeoutMS int64) (*common.CGetFollowUsersRespo
 	if err != nil {
 		return nil, err
 	}
-	response := CSingleFollowUsers{}
+	response := CSingleUsers{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
 		return nil, err
@@ -284,6 +284,105 @@ func (this *CUser) GetFollowUsers(timeoutMS int64) (*common.CGetFollowUsersRespo
 	var follows common.CGetFollowUsersResponse
 	follows.OpenIds = response.Data.OpenId
 	return &follows, nil
+}
+
+func (this *CUser) getBlackListUserOnce(nextOpenId *string, openIds *[]string, timeoutMS int64) error {
+	request := CGetBlackListSingle{}
+	request.BeginOpenId = *nextOpenId
+	b, err := json.Marshal(&request)
+	if err != nil {
+		return err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetBlackListUsersUrl, &method, nil, nil, b)
+	if err != nil {
+		return err
+	}
+	response := CSingleUsers{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
+	}
+	for _, v := range response.Data.OpenId {
+		*openIds = append(*openIds, v)
+	}
+	if response.NextOpenId != "" {
+		this.getBlackListUserOnce(&response.NextOpenId, openIds, timeoutMS)
+	}
+	return nil
+}
+
+func (this *CUser) GetBlackListUsers(timeoutMS int64) (*common.CGetBlackListUsersResponse, error) {
+	request := CGetBlackListSingle{}
+	request.BeginOpenId = ""
+	b, err := json.Marshal(&request)
+	if err != nil {
+		return nil, err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetBlackListUsersUrl, &method, nil, nil, b)
+	if err != nil {
+		return nil, err
+	}
+	response := CSingleUsers{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return nil, errors.New(response.ErrMsg)
+	}
+	if response.NextOpenId != "" {
+		this.getBlackListUserOnce(&response.NextOpenId, &response.Data.OpenId, timeoutMS)
+	}
+	var blackList common.CGetBlackListUsersResponse
+	blackList.OpenIds = response.Data.OpenId
+	return &blackList, nil
+}
+
+func (this *CUser) TakeUsersToBlackList(request *common.CTakeUsersToBlackListRequest, timeoutMS int64) error {
+	b, err := json.Marshal(request)
+	if err != nil {
+		return err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &TakeUsersToBlackListUrl, &method, nil, nil, b)
+	if err != nil {
+		return err
+	}
+	response := private.CCommonResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
+	}
+	return nil
+}
+
+func (this *CUser) UnTakeUsersToBlackList(request *common.CUnTakeUsersToBlackListRequest, timeoutMS int64) error {
+	b, err := json.Marshal(request)
+	if err != nil {
+		return err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UnTakeUsersToBlackListUrl, &method, nil, nil, b)
+	if err != nil {
+		return err
+	}
+	response := private.CCommonResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
+	}
+	return nil
 }
 
 func New(token common.IToken) common.IUser {
