@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func SendRequestWithToken(itoken common.IToken, timeoutMS int64, url *string, method *string, payload []byte) (resBody []byte, e error) {
+func SendRequestWithToken(itoken common.IToken, timeoutMS int64, url *string, method *string, params *map[string]string, headers *map[string]string, payload []byte) (resBody []byte, e error) {
 	var err error = nil
 	token, err := itoken.GetToken(timeoutMS)
 	if err != nil {
@@ -29,7 +29,17 @@ func SendRequestWithToken(itoken common.IToken, timeoutMS int64, url *string, me
 	}
 	values := req.URL.Query()
 	values.Add(AccessToken, string(token))
+	if params != nil {
+		for k, v := range *params {
+			values.Add(k, v)
+		}
+	}
 	req.URL.RawQuery = values.Encode()
+	if headers != nil {
+		for k, v := range *headers {
+			req.Header.Add(k, v)
+		}
+	}
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err

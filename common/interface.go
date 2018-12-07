@@ -59,4 +59,8 @@ type IStore interface {
 	ModifyStore(request *CModifyStoreRequest, timeoutMS int64) error
 	DeleteStore(request *CDeleteStoreRequest, timeoutMS int64) error
 	GetCategory(timeoutMS int64) (*CGetCategoryResponse, error)
+	UpdateUserRemark(request *CUpdateUserRemarkRequest, timeoutMS int64) error
+	GetUserBaseInfo(timeoutMS int64) (*CGetUserBaseInfoResponse, error)
+	GetUserBaseInfoMulti(request *CGetUserBaseInfoMultiRequest, timeoutMS int64) (*CGetUserBaseInfoMultiResponse, error)
+	GetFollowUsers(timeoutMS int64) (*CGetFollowUsersResponse, error)
 }

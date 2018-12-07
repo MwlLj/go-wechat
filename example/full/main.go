@@ -47,7 +47,7 @@ func storeTest(wc wechat.IWeChat) {
 
 func main() {
 	info := common.CUserInfo{
-		AppId:     "wxfedcab8946a21ccc",
+		// AppId:     "wxfedcab8946a21ccc",
 		AppSecret: "7ae3cc7b23b34a7b8d8cea44f7e9177f",
 		Port:      80,
 		Url:       "/test/wechat/hello",

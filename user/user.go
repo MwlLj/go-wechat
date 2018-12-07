@@ -19,7 +19,7 @@ func (this *CUser) CreateTag(request *common.CCreateTagRequest, timeoutMS int64)
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateTagUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateTagUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (this *CUser) CreateTag(request *common.CCreateTagRequest, timeoutMS int64)
 
 func (this *CUser) GetTagList(timeoutMS int64) (*common.CGetTagListResponse, error) {
 	method := http.MethodGet
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTagListUrl, &method, nil)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTagListUrl, &method, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (this *CUser) UpdateTag(request *common.CUpdateTagRequest, timeoutMS int64)
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UpdateTagUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UpdateTagUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (this *CUser) DeleteTag(request *common.CDeleteTagRequest, timeoutMS int64)
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTagUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTagUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func (this *CUser) GetTagUserList(request *common.CGetTagUserListRequest, timeou
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateTagUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateTagUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (this *CUser) AddTagToUsers(request *common.CAddTagToUsersRequest, timeoutM
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &AddTagToUsersUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &AddTagToUsersUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func (this *CUser) DeleteTagToUsers(request *common.CDeleteTagToUsersRequest, ti
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTagToUsersUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTagToUsersUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -162,7 +162,7 @@ func (this *CUser) GetTagsByUser(request *common.CGetTagsByUserRequest, timeoutM
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTagsByUserUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTagsByUserUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -175,6 +175,115 @@ func (this *CUser) GetTagsByUser(request *common.CGetTagsByUserRequest, timeoutM
 		return nil, errors.New(response.ErrMsg)
 	}
 	return &response, nil
+}
+
+func (this *CUser) UpdateUserRemark(request *common.CUpdateUserRemarkRequest, timeoutMS int64) error {
+	b, err := json.Marshal(request)
+	if err != nil {
+		return err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UpdateUserRemarkUrl, &method, nil, nil, b)
+	if err != nil {
+		return err
+	}
+	response := private.CCommonResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
+	}
+	return nil
+}
+
+func (this *CUser) GetUserBaseInfo(request *common.CGetUserBaseInfoRequest, timeoutMS int64) (*common.CGetUserBaseInfoResponse, error) {
+	method := http.MethodGet
+	params := make(map[string]string)
+	params[GetUserBaseInfoParamOpenId] = request.OpenId
+	params[GetUserBaseInfoParamLang] = request.Lang
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetUserBaseInfoUrl, &method, &params, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	response := common.CGetUserBaseInfoResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return nil, errors.New(response.ErrMsg)
+	}
+	return &response, nil
+}
+
+func (this *CUser) GetUserBaseInfoMulti(request *common.CGetUserBaseInfoMultiRequest, timeoutMS int64) (*common.CGetUserBaseInfoMultiResponse, error) {
+	b, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetUserBaseInfoMultiUrl, &method, nil, nil, b)
+	if err != nil {
+		return nil, err
+	}
+	response := common.CGetUserBaseInfoMultiResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return nil, errors.New(response.ErrMsg)
+	}
+	return &response, nil
+}
+
+func (this *CUser) getFollowUserOnce(nextOpenId *string, openIds *[]string, timeoutMS int64) error {
+	method := http.MethodGet
+	params := make(map[string]string)
+	params[GetFollowUsersParamNextOpenId] = *nextOpenId
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetFollowUsersUrl, &method, &params, nil, nil)
+	if err != nil {
+		return err
+	}
+	response := CSingleFollowUsers{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return errors.New(response.ErrMsg)
+	}
+	for _, v := range response.Data.OpenId {
+		*openIds = append(*openIds, v)
+	}
+	if response.NextOpenId != "" {
+		this.getFollowUserOnce(&response.NextOpenId, openIds, timeoutMS)
+	}
+	return nil
+}
+
+func (this *CUser) GetFollowUsers(timeoutMS int64) (*common.CGetFollowUsersResponse, error) {
+	method := http.MethodGet
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetFollowUsersUrl, &method, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	response := CSingleFollowUsers{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return nil, errors.New(response.ErrMsg)
+	}
+	if response.NextOpenId != "" {
+		this.getFollowUserOnce(&response.NextOpenId, &response.Data.OpenId, timeoutMS)
+	}
+	var follows common.CGetFollowUsersResponse
+	follows.OpenIds = response.Data.OpenId
+	return &follows, nil
 }
 
 func New(token common.IToken) common.IUser {

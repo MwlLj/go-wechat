@@ -354,6 +354,11 @@ type CUpdateUserRemarkRequest struct {
 	Remark string `json:"remark"`
 }
 
+type CGetUserBaseInfoRequest struct {
+	OpenId string
+	Lang   string
+}
+
 type CGetUserBaseInfoResponse struct {
 	ErrCode        int    `json:"errcode"`
 	ErrMsg         string `json:"errmsg"`
@@ -411,16 +416,6 @@ type CGetUserBaseInfoMultiResponse struct {
 	UserInfoList []CUserBaseInfo `json:"user_info_list"`
 }
 
-type CFollowUserInfo struct {
-	OpenId []string `json:"openid"`
-}
-
-// is NextOpenId is "" -> over
-type CGetFollowUsersRequest struct {
-	ErrCode    int             `json:"errcode"`
-	ErrMsg     string          `json:"errmsg"`
-	Total      int             `json:"total"`
-	Count      int             `json:"count"`
-	Data       CFollowUserInfo `json:"data"`
-	NextOpenId string          `json:"next_openid"`
+type CGetFollowUsersResponse struct {
+	OpenIds []string
 }
