@@ -38,7 +38,9 @@ func templateTest(wc wechat.IWeChat) {
 }
 
 func materialTest(wc wechat.IWeChat) {
-	material.UploadImageTest(wc)
+	// material.UploadImageTest(wc)
+	material.GetMaterialTotalTest(wc)
+	material.GetMaterialListTest(wc)
 }
 
 func userTest(wc wechat.IWeChat) {
@@ -68,9 +70,9 @@ func main() {
 	// template test
 	templateTest(wc)
 	// material test
-	// materialTest(wc)
+	materialTest(wc)
 	// user test
-	userTest(wc)
+	// userTest(wc)
 	// store test
 	// storeTest(wc)
 	wc.Loop()

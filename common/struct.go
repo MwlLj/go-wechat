@@ -22,11 +22,11 @@ var (
 )
 
 var (
-	MaterialTypeText  string = "text"
 	MaterialTypeImage string = "image"
 	MaterialTypeVoice string = "voice"
 	MaterialTypeVideo string = "video"
 	MaterialTypeThumb string = "thumb"
+	MaterialTypeNews  string = "news"
 )
 
 var (
