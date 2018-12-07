@@ -11,6 +11,13 @@ type IMessage interface {
 	OnMessage(sender IReply, msg *CMessage, communicate CDataCommunicate, userData interface{}) error
 }
 
+type ISender interface {
+	GroupSendByTag(request *CGroupSendByTagRequest, timeoutMS int64) (*CGroupSendByTagResponse, error)
+	GroupSendByOpenIds(request *CGroupSendByOpenIdsRequest, timeoutMS int64) (*CGroupSendByTagResponse, error)
+	DeleteGroupSend(request *CDeleteGroupSendRequest, timeoutMS int64) error
+	PreviewMessasge(request *CPreviewMessageRequest, timeoutMS int64) (*CPreviewMessageResponse, error)
+}
+
 type IReply interface {
 	SendMessage(msg *CMessage) error
 	SendEmptyMessage() error
@@ -43,6 +50,7 @@ type IMaterial interface {
 	GetTmpHDMaterial(request *CGetTmpHDMaterialRequest, timeoutMS int64) (*CGetTmpHDMaterialResponse, error)
 	AddForeverImgTextMaterial(request *CAddForeverImgTextMaterialRequest, timeoutMS int64) (*CAddForeverImgTextMaterialResponse, error)
 	UploadImage(path *string, timeoutMS int64) (*CUploadImageResponse, error)
+	UploadVideo(request *CUploadVideoRequest, timeoutMS int64) (*CUploadVideoResponse, error)
 	AddForeverOtherMaterial(request *CAddForeverOtherMaterialRequest, timeoutMS int64) (*CAddForeverOtherMaterialResponse, error)
 	GetForeverMaterial(request *CGetForeverMaterialRequest, timeoutMS int64) (*CGetForeverMaterialResponse, error)
 	DeleteForeverMaterial(request *CDeleteForeverMaterialRequest, timeoutMS int64) error

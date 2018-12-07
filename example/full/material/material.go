@@ -66,7 +66,7 @@ func GetMaterialTotalTest(wc wechat.IWeChat) {
 func GetMaterialListTest(wc wechat.IWeChat) {
 	media := wc.Material()
 	request := common.CGetMaterialListRequest{}
-	request.Type = common.MaterialTypeNews
+	request.Type = common.MaterialTypeImgText
 	request.Offset = 0
 	request.Count = 20
 	res, err := media.GetMaterialList(&request, 3000)

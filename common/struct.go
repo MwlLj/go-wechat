@@ -22,11 +22,20 @@ var (
 )
 
 var (
-	MaterialTypeImage string = "image"
-	MaterialTypeVoice string = "voice"
-	MaterialTypeVideo string = "video"
-	MaterialTypeThumb string = "thumb"
-	MaterialTypeNews  string = "news"
+	MaterialTypeImage   string = "image"
+	MaterialTypeVoice   string = "voice"
+	MaterialTypeVideo   string = "video"
+	MaterialTypeThumb   string = "thumb"
+	MaterialTypeImgText string = "news"
+)
+
+var (
+	GroupSendMsgTypeImgText string = "mpnews"
+	GroupSendMsgTypeText    string = "text"
+	GroupSendMsgTypeVoice   string = "voice"
+	GroupSendMsgTypeImage   string = "image"
+	GroupSendMsgTypeVideo   string = "mpvideo"
+	GroupSendMsgTypeCard    string = "wxcard"
 )
 
 var (
@@ -221,9 +230,7 @@ type CGetTmpMaterialRequest struct {
 }
 
 type CGetTmpMaterialResponse struct {
-	ErrCode int         `json:"errcode"`
-	ErrMsg  string      `json:"errmsg"`
-	ResUrl  interface{} `json:"-"`
+	ResUrl string
 }
 
 type CGetTmpHDMaterialRequest struct {
@@ -231,9 +238,7 @@ type CGetTmpHDMaterialRequest struct {
 }
 
 type CGetTmpHDMaterialResponse struct {
-	ErrCode int         `json:"errcode"`
-	ErrMsg  string      `json:"errmsg"`
-	ResUrl  interface{} `json:"-"`
+	ResUrl string
 }
 
 type CImgTextMaterial struct {
@@ -281,6 +286,21 @@ type CUploadImageResponse struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 	Url     string `json:"url"`
+}
+
+type CUploadVideoRequest struct {
+	// get from addOtherMaterial interface
+	MediaId     string `json:"media_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type CUploadVideoResponse struct {
+	Type      string `json:"type"`
+	MediaId   string `json:"media_id"`
+	CreatedAt int64  `json:"created_at"`
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
 }
 
 type CGetForeverMaterialRequest struct {
@@ -571,4 +591,85 @@ type CTakeUsersToBlackListRequest struct {
 
 type CUnTakeUsersToBlackListRequest struct {
 	OpenIdList []string `json:"openid_list"`
+}
+
+type CGroupSendFilterInfo struct {
+	IsToAll bool `json:"is_to_all"`
+	TagId   int  `json:"tag_id"`
+}
+
+type CGroupSendCardExt struct {
+	Code      string `json:"code"`
+	TimeStamp string `json:"timestamp"`
+	Signature string `json:"signature"`
+}
+
+type CGroupSendMsgContent struct {
+	MediaId     string            `json:"media_id"`
+	Title       string            `json:"title"`
+	Description string            `json:"description"`
+	Content     string            `json:"content"`
+	CardId      string            `json:"card_id"`
+	CardExt     CGroupSendCardExt `json:"card_ext"`
+}
+
+type CGroupSendByTagRequest struct {
+	Filter            CGroupSendFilterInfo `json:"filter"`
+	ImgText           CGroupSendMsgContent `json:"mpnews"`
+	Text              CGroupSendMsgContent `json:"text"`
+	Voice             CGroupSendMsgContent `json:"voice"`
+	Image             CGroupSendMsgContent `json:"image"`
+	Video             CGroupSendMsgContent `json:"mpvideo"`
+	Card              CGroupSendMsgContent `json:"wxcard"`
+	MsgType           string               `json:"msgtype"`
+	SendIgnoreReprint int                  `json:"send_ignore_reprint"`
+}
+
+type CGroupSendByTagResponse struct {
+	MsgId     int64  `json:"msg_id"`
+	MsgDataId int64  `json:"msg_data_id"`
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
+}
+
+type CGroupSendByOpenIdsRequest struct {
+	Touser            []string             `json:"touser"`
+	ImgText           CGroupSendMsgContent `json:"mpnews"`
+	Text              CGroupSendMsgContent `json:"text"`
+	Voice             CGroupSendMsgContent `json:"voice"`
+	Image             CGroupSendMsgContent `json:"image"`
+	Video             CGroupSendMsgContent `json:"mpvideo"`
+	Card              CGroupSendMsgContent `json:"wxcard"`
+	MsgType           string               `json:"msgtype"`
+	SendIgnoreReprint int                  `json:"send_ignore_reprint"`
+}
+
+type CGroupSendByOpenIdsResponse struct {
+	MsgId     int64  `json:"msg_id"`
+	MsgDataId int64  `json:"msg_data_id"`
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
+}
+
+type CDeleteGroupSendRequest struct {
+	MsgId      int64 `json:"msg_id"`
+	ArticleIdx int   `json:"article_idx"`
+}
+
+type CPreviewMessageRequest struct {
+	ToWxName string               `json:"towxname"`
+	Touser   string               `json:"touser"`
+	ImgText  CGroupSendMsgContent `json:"mpnews"`
+	Text     CGroupSendMsgContent `json:"text"`
+	Voice    CGroupSendMsgContent `json:"voice"`
+	Image    CGroupSendMsgContent `json:"image"`
+	Video    CGroupSendMsgContent `json:"mpvideo"`
+	Card     CGroupSendMsgContent `json:"wxcard"`
+	MsgType  string               `json:"msgtype"`
+}
+
+type CPreviewMessageResponse struct {
+	MsgId   int64  `json:"msg_id"`
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
 }

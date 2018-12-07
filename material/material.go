@@ -45,7 +45,7 @@ func (this *CMaterial) GetTmpMaterial(request *common.CGetTmpMaterialRequest, ti
 	if err != nil {
 		return nil, err
 	}
-	response := common.CGetTmpMaterialResponse{}
+	response := CGetTmpMaterialResponse{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,20 @@ func (this *CMaterial) GetTmpMaterial(request *common.CGetTmpMaterialRequest, ti
 	if response.ErrCode != private.ErrorCodeSuccess {
 		return nil, errors.New(response.ErrMsg)
 	}
-	return &response, nil
+	res := common.CGetTmpMaterialResponse{}
+	isFind := false
+	for _, url := range GetTmpMaterialResUrls {
+		r := response.ResUrl.(map[string]interface{})[url]
+		if r != nil {
+			res.ResUrl = r.(string)
+			isFind = true
+			break
+		}
+	}
+	if isFind == false {
+		return nil, errors.New("type error")
+	}
+	return &res, nil
 }
 
 func (this *CMaterial) GetTmpHDMaterial(request *common.CGetTmpHDMaterialRequest, timeoutMS int64) (*common.CGetTmpHDMaterialResponse, error) {
@@ -64,7 +77,7 @@ func (this *CMaterial) GetTmpHDMaterial(request *common.CGetTmpHDMaterialRequest
 	if err != nil {
 		return nil, err
 	}
-	response := common.CGetTmpHDMaterialResponse{}
+	response := CGetTmpHDMaterialResponse{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
 		return nil, err
@@ -72,7 +85,20 @@ func (this *CMaterial) GetTmpHDMaterial(request *common.CGetTmpHDMaterialRequest
 	if response.ErrCode != private.ErrorCodeSuccess {
 		return nil, errors.New(response.ErrMsg)
 	}
-	return &response, nil
+	res := common.CGetTmpHDMaterialResponse{}
+	isFind := false
+	for _, url := range GetTmpMaterialResUrls {
+		r := response.ResUrl.(map[string]interface{})[url]
+		if r != nil {
+			res.ResUrl = r.(string)
+			isFind = true
+			break
+		}
+	}
+	if isFind == false {
+		return nil, errors.New("type error")
+	}
+	return &res, nil
 }
 
 func (this *CMaterial) AddForeverImgTextMaterial(request *common.CAddForeverImgTextMaterialRequest, timeoutMS int64) (*common.CAddForeverImgTextMaterialResponse, error) {
@@ -108,6 +134,27 @@ func (this *CMaterial) UploadImage(path *string, timeoutMS int64) (*common.CUplo
 		return nil, err
 	}
 	response := common.CUploadImageResponse{}
+	err = json.Unmarshal(resBody, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.ErrCode != private.ErrorCodeSuccess {
+		return nil, errors.New(response.ErrMsg)
+	}
+	return &response, nil
+}
+
+func (this *CMaterial) UploadVideo(request *common.CUploadVideoRequest, timeoutMS int64) (*common.CUploadVideoResponse, error) {
+	b, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+	method := http.MethodPost
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &UploadVideoUrl, &method, nil, nil, b)
+	if err != nil {
+		return nil, err
+	}
+	response := common.CUploadVideoResponse{}
 	err = json.Unmarshal(resBody, &response)
 	if err != nil {
 		return nil, err
