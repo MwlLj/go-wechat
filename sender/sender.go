@@ -76,7 +76,7 @@ func (this *CSender) DeleteGroupSend(request *common.CDeleteGroupSendRequest, ti
 	return nil
 }
 
-func (this *CSender) PreviewMessasge(request *common.CPreviewMessageRequest, timeoutMS int64) (*common.CPreviewMessageResponse, error) {
+func (this *CSender) PreviewMessage(request *common.CPreviewMessageRequest, timeoutMS int64) (*common.CPreviewMessageResponse, error) {
 	b, err := json.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (this *CSender) PreviewMessasge(request *common.CPreviewMessageRequest, tim
 	return &response, nil
 }
 
-func NewSender(token common.IToken) common.ISender {
+func New(token common.IToken) common.ISender {
 	sender := CSender{m_token: token}
 	return &sender
 }

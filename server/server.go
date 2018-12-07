@@ -204,6 +204,10 @@ func (this *CServer) Store() common.IStore {
 	return store.New(this.m_token)
 }
 
+func (this *CServer) Sender() common.ISender {
+	return sender.New(this.m_token)
+}
+
 func New(info *common.CUserInfo) *CServer {
 	server := CServer{m_userInfo: *info}
 	server.init(info)

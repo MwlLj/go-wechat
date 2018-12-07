@@ -11,6 +11,7 @@ type IWeChat interface {
 	Material() common.IMaterial
 	User() common.IUser
 	Store() common.IStore
+	Sender() common.ISender
 	RegisterEvent(callback common.IEvent, userData interface{})
 	RegisterEventFunc(callback common.FuncEventCallback, userData interface{})
 	RegisterMsg(callback common.IMessage, userData interface{})

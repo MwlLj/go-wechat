@@ -7,13 +7,33 @@ import (
 	"github.com/MwlLj/go-wechat/common"
 )
 
+func AddForeverOtherMaterialTest(wc wechat.IWeChat) {
+	media := wc.Material()
+	request := common.CAddForeverOtherMaterialRequest{}
+	request.MaterialType = common.MaterialTypeImage
+	request.Path = "./testresource/test.jpg"
+	request.Title = "考拉资讯"
+	request.Introduction = "考拉 ... 考拉 ..."
+	res, err := media.AddForeverOtherMaterial(&request, 3000)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	b, err := json.Marshal(res)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(b))
+}
+
 func AddForeverImgTextMaterialTest(wc wechat.IWeChat) {
 	media := wc.Material()
 	request := common.CAddForeverImgTextMaterialRequest{}
 	articles := []common.CImgTextMaterial{}
 	article := common.CImgTextMaterial{}
 	article.Title = "测试"
-	article.ThumbMediaId = "http://mmbiz.qpic.cn/mmbiz/gLO17UPS6FS2xsypf378iaNhWacZ1G1UplZYWEYfwvuU6Ont96b1roYsCNFwaRrSaKTPCUdBK9DgEHicsKwWCBRQ/0"
+	article.ThumbMediaId = "RcnqQNVBusVo6Fx-3qGKRRueLS_k6vJ8gXqbhgfkzmQ"
 	article.ShowCoverPic = 1
 	article.Content = "Hello World"
 	article.ContentSourceUrl = "https://www.baidu.com"

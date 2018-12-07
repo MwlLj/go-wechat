@@ -15,7 +15,7 @@ type ISender interface {
 	GroupSendByTag(request *CGroupSendByTagRequest, timeoutMS int64) (*CGroupSendByTagResponse, error)
 	GroupSendByOpenIds(request *CGroupSendByOpenIdsRequest, timeoutMS int64) (*CGroupSendByTagResponse, error)
 	DeleteGroupSend(request *CDeleteGroupSendRequest, timeoutMS int64) error
-	PreviewMessasge(request *CPreviewMessageRequest, timeoutMS int64) (*CPreviewMessageResponse, error)
+	PreviewMessage(request *CPreviewMessageRequest, timeoutMS int64) (*CPreviewMessageResponse, error)
 }
 
 type IReply interface {

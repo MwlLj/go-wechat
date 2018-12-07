@@ -168,11 +168,13 @@ func (this *CMaterial) UploadVideo(request *common.CUploadVideoRequest, timeoutM
 func (this *CMaterial) AddForeverOtherMaterial(request *common.CAddForeverOtherMaterialRequest, timeoutMS int64) (*common.CAddForeverOtherMaterialResponse, error) {
 	params := make(map[string]string)
 	params[AddOtherMaterialParamType] = request.MaterialType
+	multis := make([]communicate.CMultiData, 1)
 	multi := communicate.CMultiData{}
 	// file
 	multi.Type = communicate.MultiDataTypeFile
 	multi.FormName = AddOtherMaterialFormnameMedia
 	multi.ValueOrFilename = request.Path
+	multis = append(multis, multi)
 	// desc
 	multi.Type = communicate.MultiDataTypeText
 	multi.FormName = AddOtherMaterialFormnameDescription
@@ -184,7 +186,6 @@ func (this *CMaterial) AddForeverOtherMaterial(request *common.CAddForeverOtherM
 		return nil, err
 	}
 	multi.ValueOrFilename = string(b)
-	multis := make([]communicate.CMultiData, 1)
 	multis = append(multis, multi)
 	resBody, err := communicate.UploadFileWithToken(this.m_token, timeoutMS, &multis, &AddForeverOtherMaterialUrl, &params, nil)
 	if err != nil {
