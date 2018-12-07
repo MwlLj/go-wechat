@@ -39,6 +39,7 @@ func templateTest(wc wechat.IWeChat) {
 
 func materialTest(wc wechat.IWeChat) {
 	// material.UploadImageTest(wc)
+	material.AddForeverImgTextMaterialTest(wc)
 	material.GetMaterialTotalTest(wc)
 	material.GetMaterialListTest(wc)
 }
