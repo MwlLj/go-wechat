@@ -29,8 +29,8 @@ func GroupSendByTagTest(wc wechat.IWeChat) {
 func PreviewMessageTest(wc wechat.IWeChat) {
 	send := wc.Sender()
 	request := common.CPreviewMessageRequest{}
-	request.ToWxName = "wxid_4j5jlu27drb922"
-	// request.ToWxName = "lucky-xiqiao"
+	// request.ToWxName = "wxid_4j5jlu27drb922"
+	request.ToWxName = "lucky-xiqiao"
 	request.ImgText = common.CGroupSendMsgContent{MediaId: "RcnqQNVBusVo6Fx-3qGKRej6CNJlQZslLdjrdDOWd48"}
 	request.MsgType = common.GroupSendMsgTypeImgText
 	res, err := send.PreviewMessage(&request, 3000)

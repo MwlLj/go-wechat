@@ -56,8 +56,8 @@ func storeTest(wc wechat.IWeChat) {
 }
 
 func senderTest(wc wechat.IWeChat) {
-	sender.GroupSendByTagTest(wc)
-	// sender.PreviewMessageTest(wc)
+	// sender.GroupSendByTagTest(wc)
+	sender.PreviewMessageTest(wc)
 }
 
 func main() {
