@@ -38,7 +38,17 @@ type ITemplate interface {
 }
 
 type IMaterial interface {
+	CreateTmpMaterial(request *CCreateTmpMaterialRequest, timeoutMS int64) (*CCreateTmpMaterialResponse, error)
+	GetTmpMaterial(request *CGetTmpMaterialRequest, timeoutMS int64) (*CGetTmpMaterialResponse, error)
+	GetTmpHDMaterial(request *CGetTmpHDMaterialRequest, timeoutMS int64) (*CGetTmpHDMaterialResponse, error)
+	AddForeverImgTextMaterial(request *CAddForeverImgTextMaterialRequest, timeoutMS int64) (*CAddForeverImgTextMaterialResponse, error)
 	UploadImage(path *string, timeoutMS int64) (*CUploadImageResponse, error)
+	AddForeverOtherMaterial(request *CAddForeverOtherMaterialRequest, timeoutMS int64) (*CAddForeverOtherMaterialResponse, error)
+	GetForeverMaterial(request *CGetForeverMaterialRequest, timeoutMS int64) (*CGetForeverMaterialResponse, error)
+	DeleteForeverMaterial(request *CDeleteForeverMaterialRequest, timeoutMS int64) error
+	UpdateForeverImgTextMaterial(request *CUpdateForeverImgTextMaterialRequest, timeoutMS int64) error
+	GetMaterialTotal(timeoutMS int64) (*CGetMaterialTotalResponse, error)
+	GetMaterialList(request *CGetMaterialListRequest, timeoutMS int64) (*CGetMaterialListResponse, error)
 }
 
 type IUser interface {

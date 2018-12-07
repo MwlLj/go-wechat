@@ -10,6 +10,7 @@ import (
 	"github.com/MwlLj/go-wechat/example/full/message"
 	"github.com/MwlLj/go-wechat/example/full/store"
 	"github.com/MwlLj/go-wechat/example/full/template"
+	"github.com/MwlLj/go-wechat/example/full/user"
 )
 
 var _ = fmt.Println
@@ -40,6 +41,10 @@ func materialTest(wc wechat.IWeChat) {
 	material.UploadImageTest(wc)
 }
 
+func userTest(wc wechat.IWeChat) {
+	user.GetFollowUsersTest(wc)
+}
+
 func storeTest(wc wechat.IWeChat) {
 	// store.UploadImageTest(wc)
 	store.CreateStoreTest(wc)
@@ -47,7 +52,7 @@ func storeTest(wc wechat.IWeChat) {
 
 func main() {
 	info := common.CUserInfo{
-		// AppId:     "wxfedcab8946a21ccc",
+		AppId:     "wxfedcab8946a21ccc",
 		AppSecret: "7ae3cc7b23b34a7b8d8cea44f7e9177f",
 		Port:      80,
 		Url:       "/test/wechat/hello",
@@ -64,6 +69,8 @@ func main() {
 	templateTest(wc)
 	// material test
 	// materialTest(wc)
+	// user test
+	userTest(wc)
 	// store test
 	// storeTest(wc)
 	wc.Loop()

@@ -99,7 +99,7 @@ func (this *CUser) GetTagUserList(request *common.CGetTagUserListRequest, timeou
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateTagUrl, &method, nil, nil, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTagUserListUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}

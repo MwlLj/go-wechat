@@ -22,6 +22,14 @@ var (
 )
 
 var (
+	MaterialTypeText  string = "text"
+	MaterialTypeImage string = "image"
+	MaterialTypeVoice string = "voice"
+	MaterialTypeVideo string = "video"
+	MaterialTypeThumb string = "thumb"
+)
+
+var (
 	// position event
 	EventTypeLocation string = "LOCATION"
 )
@@ -195,6 +203,76 @@ type CSendTemplateMsgResponse struct {
 	MsgId   int64  `json:"msgid"`
 }
 
+type CCreateTmpMaterialRequest struct {
+	MaterialType string
+	Path         string
+}
+
+type CCreateTmpMaterialResponse struct {
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
+	Type      string `json:"type"`
+	MediaId   string `json:"media_id"`
+	CreatedAt int64  `json:"created_at"`
+}
+
+type CGetTmpMaterialRequest struct {
+	MediaId string
+}
+
+type CGetTmpMaterialResponse struct {
+	ErrCode int         `json:"errcode"`
+	ErrMsg  string      `json:"errmsg"`
+	ResUrl  interface{} `json:"-"`
+}
+
+type CGetTmpHDMaterialRequest struct {
+	MediaId string
+}
+
+type CGetTmpHDMaterialResponse struct {
+	ErrCode int         `json:"errcode"`
+	ErrMsg  string      `json:"errmsg"`
+	ResUrl  interface{} `json:"-"`
+}
+
+type CImgTextMaterial struct {
+	Title              string `json:"title"`
+	ThumbMediaId       string `json:"thumb_media_id"`
+	Author             string `json:"author"`
+	Digest             string `json:"digest"`
+	ShowCoverPic       int    `json:"show_cover_pic"`
+	Content            string `json:"content"`
+	ContentSourceUrl   string `json:"content_source_url"`
+	NeedOpenComment    int    `json:"need_open_comment"`
+	OnlyFansCanComment int    `json:"only_fans_can_comment"`
+	Url                string `json:"url"`
+}
+
+type CAddForeverImgTextMaterialRequest struct {
+	Articles []CImgTextMaterial `json:"articles"`
+}
+
+type CAddForeverImgTextMaterialResponse struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+	MediaId string `json:"media_id"`
+}
+
+type CAddForeverOtherMaterialRequest struct {
+	MaterialType string
+	Path         string
+	Title        string
+	Introduction string
+}
+
+type CAddForeverOtherMaterialResponse struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+	MediaId string `json:"media_id"`
+	Url     string `json:"url"`
+}
+
 type CUploadImageRequest struct {
 	Media []byte `json:"media"`
 }
@@ -203,6 +281,64 @@ type CUploadImageResponse struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 	Url     string `json:"url"`
+}
+
+type CGetForeverMaterialRequest struct {
+	MediaId string `json:"media_id"`
+}
+
+type CGetForeverMaterialResponse struct {
+	NewsItem    []CImgTextMaterial `json:"news_item"`
+	Title       string             `json:"title"`
+	Description string             `json:"description"`
+	DownUrl     string             `json:"down_url"`
+	ErrCode     int                `json:"errcode"`
+	ErrMsg      string             `json:"errmsg"`
+}
+
+type CDeleteForeverMaterialRequest struct {
+	MediaId string `json:"media_id"`
+}
+
+type CUpdateForeverImgTextMaterialRequest struct {
+	MediaId  string           `json:"media_id"`
+	Index    int              `json:"index"`
+	Articles CImgTextMaterial `json:"articles"`
+}
+
+type CGetMaterialTotalResponse struct {
+	VoiceCount int    `json:"voice_count"`
+	VideoCount int    `json:"video_count"`
+	ImageCount int    `json:"image_count"`
+	NewsCount  int    `json:"news_count"`
+	ErrCode    int    `json:"errcode"`
+	ErrMsg     string `json:"errmsg"`
+}
+
+type CImgTextMaterialListContent struct {
+	NewsItem []CImgTextMaterial `json:"news_item"`
+}
+
+type CMaterialListItem struct {
+	MediaId    string                      `json:"media_id"`
+	Content    CImgTextMaterialListContent `json:"content"`
+	UpdateTime int64                       `json:"update_time"`
+	Name       string                      `json:"name"`
+	Url        string                      `json:"url"`
+}
+
+type CGetMaterialListRequest struct {
+	Type   string `json:"type"`
+	Offset int    `json:"offset"`
+	Count  int    `json:"count"`
+}
+
+type CGetMaterialListResponse struct {
+	TotalCount int                 `json:"total_count"`
+	ItemCount  int                 `json:"item_count"`
+	Item       []CMaterialListItem `json:"item"`
+	ErrCode    int                 `json:"errcode"`
+	ErrMsg     string              `json:"errmsg"`
 }
 
 type CStorePhotoUrl struct {
