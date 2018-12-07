@@ -50,6 +50,10 @@ type IUser interface {
 	AddTagToUsers(request *CAddTagToUsersRequest, timeoutMS int64) error
 	DeleteTagToUsers(request *CDeleteTagToUsersRequest, timeoutMS int64) error
 	GetTagsByUser(request *CGetTagsByUserRequest, timeoutMS int64) (*CGetTagsByUserResponse, error)
+	UpdateUserRemark(request *CUpdateUserRemarkRequest, timeoutMS int64) error
+	GetUserBaseInfo(request *CGetUserBaseInfoRequest, timeoutMS int64) (*CGetUserBaseInfoResponse, error)
+	GetUserBaseInfoMulti(request *CGetUserBaseInfoMultiRequest, timeoutMS int64) (*CGetUserBaseInfoMultiResponse, error)
+	GetFollowUsers(timeoutMS int64) (*CGetFollowUsersResponse, error)
 }
 
 type IStore interface {
@@ -59,8 +63,4 @@ type IStore interface {
 	ModifyStore(request *CModifyStoreRequest, timeoutMS int64) error
 	DeleteStore(request *CDeleteStoreRequest, timeoutMS int64) error
 	GetCategory(timeoutMS int64) (*CGetCategoryResponse, error)
-	UpdateUserRemark(request *CUpdateUserRemarkRequest, timeoutMS int64) error
-	GetUserBaseInfo(timeoutMS int64) (*CGetUserBaseInfoResponse, error)
-	GetUserBaseInfoMulti(request *CGetUserBaseInfoMultiRequest, timeoutMS int64) (*CGetUserBaseInfoMultiResponse, error)
-	GetFollowUsers(timeoutMS int64) (*CGetFollowUsersResponse, error)
 }

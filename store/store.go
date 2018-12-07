@@ -19,7 +19,7 @@ func (this *CStore) CreateStore(request *common.CCreateStoreRequest, timeoutMS i
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateStoreUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateStoreUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (this *CStore) GetStore(request *common.CGetStoreRequest, timeoutMS int64) 
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetStoreUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetStoreUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (this *CStore) GetStoreList(request *common.CGetStoreListRequest, timeoutMS
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetStoreListUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetStoreListUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (this *CStore) ModifyStore(request *common.CModifyStoreRequest, timeoutMS i
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &ModifyStoreUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &ModifyStoreUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -103,7 +103,7 @@ func (this *CStore) DeleteStore(request *common.CDeleteStoreRequest, timeoutMS i
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteStoreUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteStoreUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ func (this *CStore) DeleteStore(request *common.CDeleteStoreRequest, timeoutMS i
 
 func (this *CStore) GetCategory(timeoutMS int64) (*common.CGetCategoryResponse, error) {
 	method := http.MethodGet
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetCategoryUrl, &method, nil)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetCategoryUrl, &method, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}

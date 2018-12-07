@@ -24,7 +24,7 @@ func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 		return err
 	}
 	method := http.MethodPost
-	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateMenuUrl, &method, b)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &CreateMenuUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (this *CMenu) Create(data *[]common.CButton, timeoutMS int64) error {
 
 func (this *CMenu) GetAll(timeoutMS int64) (*common.CGetMenuJson, error) {
 	method := http.MethodGet
-	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetMenuUrl, &method, nil)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetMenuUrl, &method, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (this *CMenu) GetAll(timeoutMS int64) (*common.CGetMenuJson, error) {
 
 func (this *CMenu) DeleteAll(timeoutMS int64) error {
 	method := http.MethodGet
-	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteMenuUrl, &method, nil)
+	body, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteMenuUrl, &method, nil, nil, nil)
 	if err != nil {
 		return err
 	}

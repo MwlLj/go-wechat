@@ -21,7 +21,7 @@ func (this *CTemplate) SetIndustry(request *common.CSetIndustryRequest, timeoutM
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &SetIndustryUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &SetIndustryUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (this *CTemplate) SetIndustry(request *common.CSetIndustryRequest, timeoutM
 
 func (this *CTemplate) GetIndustry(timeoutMS int64) (*common.CGetIndustryResponse, error) {
 	method := http.MethodGet
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetIndustryUrl, &method, nil)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetIndustryUrl, &method, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (this *CTemplate) GetTemplateId(request *common.CGetTemplateIdRequest, time
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTemplateIdByTemplLibIdUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTemplateIdByTemplLibIdUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (this *CTemplate) GetTemplateId(request *common.CGetTemplateIdRequest, time
 
 func (this *CTemplate) GetTemplateList(timeoutMS int64) (*common.CGetTemplateListResponse, error) {
 	method := http.MethodGet
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTemplateListUrl, &method, nil)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &GetTemplateListUrl, &method, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (this *CTemplate) DeleteTemplate(request *common.CDeleteTemplateRequest, ti
 		return err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTemplateUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &DeleteTemplateUrl, &method, nil, nil, b)
 	if err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func (this *CTemplate) SendTemplateMsg(request *common.CSendTemplateMsgRequest, 
 		return nil, err
 	}
 	method := http.MethodPost
-	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &SendTemplateMsgUrl, &method, b)
+	resBody, err := communicate.SendRequestWithToken(this.m_token, timeoutMS, &SendTemplateMsgUrl, &method, nil, nil, b)
 	if err != nil {
 		return nil, err
 	}
