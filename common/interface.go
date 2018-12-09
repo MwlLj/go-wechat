@@ -87,4 +87,15 @@ type IStore interface {
 }
 
 type IShop interface {
+	AddCommodity(request *CAddCommodityRequest, timeoutMS int64) (*CAddCommodityResponse, error)
+	DeleteCommodity(request *CDeleteCommodityRequest, timeoutMS int64) error
+	UpdateCommodity(request *CUpdateCommodityRequest, timeoutMS int64) error
+	GetCommodity(request *CGetCommodityRequest, timeoutMS int64) (*CGetCommodityResponse, error)
+	GetCommodityByStatus(request *CGetCommodityByStatusRequest, timeoutMS int64) (*CGetCommodityByStatusResponse, error)
+	UpdateCommodityStatus(request *CUpdateCommodityStatusRequest, timeoutMS int64) error
+	GetSubClassesByClassify(request *CGetSubClassesByClassifyRequest, timeoutMS int64) (*CGetSubClassesByClassifyResponse, error)
+	GetAllSkuByClassify(request *CGetAllSkuByClassifyRequest, timeoutMS int64) (*CGetAllSkuByClassifyResponse, error)
+	GetAllPropertyByClassify(request *CGetAllPropertyByClassifyRequest, timeoutMS int64) (*CGetAllPropertyByClassifyResponse, error)
+	AddStock(request *CAddStockRequest, timeoutMS int64) error
+	ReduceStock(request *CReduceStockRequest, timeoutMS int64) error
 }

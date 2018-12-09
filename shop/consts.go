@@ -3,6 +3,7 @@ package shop
 var (
 	AddCommodityUrl             string = "https://api.weixin.qq.com/merchant/create"
 	DeleteCommodityUrl          string = "https://api.weixin.qq.com/merchant/del"
+	UpdateCommodityUrl          string = "https://api.weixin.qq.com/merchant/update"
 	GetCommodityUrl             string = "https://api.weixin.qq.com/merchant/get"
 	GetCommodityByStatusUrl     string = "https://api.weixin.qq.com/merchant/getbystatus"
 	UpdateCommodityStatusUrl    string = "https://api.weixin.qq.com/merchant/modproductstatus"
