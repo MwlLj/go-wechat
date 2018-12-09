@@ -673,3 +673,196 @@ type CPreviewMessageResponse struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 }
+
+type CCommodityProperty struct {
+	Id  string `json:"id"`
+	Vid string `json:"vid"`
+}
+
+type CCommoditySkuInfo struct {
+	Id  string   `json:"id"`
+	Vid []string `json:"vid"`
+}
+
+type CCommodityProductBaseDetail struct {
+	Text string `json:"text"`
+	Img  string `json:"img`
+}
+
+type CCommodityProductBase struct {
+	CategoryId []string                      `json:"category_id"`
+	Property   []CCommodityProperty          `json:"property"`
+	Name       string                        `json:"name"`
+	SkuInfo    CCommoditySkuInfo             `json:"sku_info"`
+	MainImg    string                        `json:"main_img"`
+	DetailHtml string                        `json:"detail_html"`
+	Img        []string                      `json:"img"`
+	Detail     []CCommodityProductBaseDetail `json:"detail"`
+	BuyLimit   int                           `json:"buy_limit"`
+}
+
+type CCommoditySkuListItem struct {
+	SkuId       string `json:"sku_id"`
+	Price       string `json:"price"`
+	IconUrl     string `json:"icon_url"`
+	ProductCode string `json:"product_code"`
+	OriPrice    int64  `json:"ori_price"`
+	Quantity    int    `json:"quantity"`
+}
+
+type CCommodityAttrExtLocation struct {
+	Country  string `json:"country"`
+	Province string `json:"province"`
+	City     string `json:"city"`
+	Address  string `json:"address"`
+}
+
+type CCommodityAttrExt struct {
+	Location         CCommodityAttrExtLocation `json:"location"`
+	IsPostFree       int                       `json:"isPostFree"`
+	IsHasReceipt     int                       `json:"isHasReceipt"`
+	IsUnderGuaranty  int                       `json:"isUnderGuaranty"`
+	IsSupportReplace int                       `json:"isSupportReplace"`
+}
+
+type CCommodityDeliveryInfoExpress struct {
+	Id    int64 `json:"id"`
+	Price int64 `json:"price"`
+}
+
+type CCommodityDeliveryInfo struct {
+	DeliveryType int                             `json:"delivery_type"`
+	TemplateId   int                             `json:"template_id"`
+	Express      []CCommodityDeliveryInfoExpress `json:"express"`
+}
+
+type CAddCommodityRequest struct {
+	ProductBase  CCommodityProductBase   `json:"product_base"`
+	SkuList      []CCommoditySkuListItem `json:"sku_list"`
+	AttrExt      CCommodityAttrExt       `json:"attrext"`
+	DeliveryInfo CCommodityDeliveryInfo  `json:"delivery_info"`
+}
+
+type CAddCommodityResponse struct {
+	ProductId string `json:"product_id"`
+	ErrCode   int    `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
+}
+
+type CDeleteCommodityRequest struct {
+	ProductId string `json:"product_id"`
+}
+
+type CUpdateCommodityRequest struct {
+	ProductId    string                  `json:"product_id"`
+	ProductBase  CCommodityProductBase   `json:"product_base"`
+	SkuList      []CCommoditySkuListItem `json:"sku_list"`
+	AttrExt      CCommodityAttrExt       `json:"attrext"`
+	DeliveryInfo CCommodityDeliveryInfo  `json:"delivery_info"`
+}
+
+type CCommodityDetail struct {
+	ProductBase  CCommodityProductBase   `json:"product_base"`
+	SkuList      []CCommoditySkuListItem `json:"sku_list"`
+	AttrExt      CCommodityAttrExt       `json:"attrext"`
+	DeliveryInfo CCommodityDeliveryInfo  `json:"delivery_info"`
+}
+
+type CGetCommodityRequest struct {
+	ProductId string `json:"product_id"`
+}
+
+type CGetCommodityResponse struct {
+	ProductInfo CCommodityDetail `json:"product_info"`
+	ErrCode     int              `json:"errcode"`
+	ErrMsg      string           `json:"errmsg"`
+}
+
+type CGetCommodityByStatusRequest struct {
+	CommodityStatus int `json:"status"`
+}
+
+type CGetCommodityByStatusResponse struct {
+	ProductInfo []CCommodityDetail `json:"product_info"`
+	ErrCode     int                `json:"errcode"`
+	ErrMsg      string             `json:"errmsg"`
+}
+
+type CUpdateCommodityStatusRequest struct {
+	ProductId       string `json:"product_id"`
+	CommodityStatus int    `json:"status"`
+}
+
+type CGetSubClassesByClassifyRequest struct {
+	CateId int64 `json:"cate_id"`
+}
+
+type CCommodityCateInfo struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type CGetSubClassesByClassifyResponse struct {
+	CateList []CCommodityCateInfo `json:"cate_list"`
+	ErrCode  int                  `json:"errcode"`
+	ErrMsg   string               `json:"errmsg"`
+}
+
+type CGetAllSkuByClassifyRequest struct {
+	CateId string `json:"cate_id"`
+}
+
+type CCommoditySkuValueList struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type CCommoditySkuTable struct {
+	Id        string                   `json:"id"`
+	Name      string                   `json:"name"`
+	ValueList []CCommoditySkuValueList `json:"value_list"`
+}
+
+type CGetAllSkuByClassifyResponse struct {
+	SkuTable CCommoditySkuTable `json:"sku_table"`
+	ErrCode  int                `json:"errcode"`
+	ErrMsg   string             `json:"errmsg"`
+}
+
+type CGetAllPropertyByClassifyRequest struct {
+	CateId string `json:"cate_id"`
+}
+
+type CCommodityClassifyPropertyValue struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type CCommodityClassifyProperty struct {
+	Id            string                            `json:"id"`
+	Name          string                            `json:"name"`
+	PropertyValue []CCommodityClassifyPropertyValue `json:"property_value"`
+}
+
+type CGetAllPropertyByClassifyResponse struct {
+	Properties CCommodityClassifyProperty `json:"properties"`
+	ErrCode    int                        `json:"errcode"`
+	ErrMsg     string                     `json:"errmsg"`
+}
+
+type CStockSkuInfo struct {
+	Id  string
+	Vid string
+}
+
+type CAddStockRequest struct {
+	ProductId string
+	SkuInfo   []CStockSkuInfo
+	Quantity  int
+}
+
+type CReduceStockRequest struct {
+	ProductId string
+	SkuInfo   []CStockSkuInfo
+	Quantity  int
+}

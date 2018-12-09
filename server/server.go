@@ -8,6 +8,7 @@ import (
 	"github.com/MwlLj/go-wechat/material"
 	"github.com/MwlLj/go-wechat/menu"
 	"github.com/MwlLj/go-wechat/sender"
+	"github.com/MwlLj/go-wechat/shop"
 	"github.com/MwlLj/go-wechat/store"
 	"github.com/MwlLj/go-wechat/template"
 	"github.com/MwlLj/go-wechat/token"
@@ -202,6 +203,10 @@ func (this *CServer) User() common.IUser {
 
 func (this *CServer) Store() common.IStore {
 	return store.New(this.m_token)
+}
+
+func (this *CServer) Shop() common.IShop {
+	return shop.New(this.m_token)
 }
 
 func (this *CServer) Sender() common.ISender {

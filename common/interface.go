@@ -85,3 +85,6 @@ type IStore interface {
 	DeleteStore(request *CDeleteStoreRequest, timeoutMS int64) error
 	GetCategory(timeoutMS int64) (*CGetCategoryResponse, error)
 }
+
+type IShop interface {
+}
