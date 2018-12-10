@@ -19,8 +19,13 @@ type CTokenJson struct {
 
 type CToken struct {
 	m_tokenJson          CTokenJson
+	m_userInfo           common.CUserInfo
 	m_isVaild            bool
 	m_updateTokenChannel chan bool
+}
+
+func (this *CToken) GetUserInfo() *common.CUserInfo {
+	return &this.m_userInfo
 }
 
 func (this *CToken) GetToken(timeoutMS int64) (token []byte, e error) {
@@ -59,6 +64,7 @@ func (this *CToken) UpdateToken(timeoutMS int64) (token []byte, e error) {
 }
 
 func (this *CToken) init(info *common.CUserInfo) {
+	this.m_userInfo = *info
 	this.m_updateTokenChannel = make(chan bool, 1)
 	this.m_isVaild = false
 	go func() {

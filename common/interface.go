@@ -25,6 +25,7 @@ type IReply interface {
 }
 
 type IToken interface {
+	GetUserInfo() *CUserInfo
 	GetToken(timeoutMS int64) (token []byte, e error)
 	UpdateToken(timeoutMS int64) (token []byte, e error)
 }
