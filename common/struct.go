@@ -869,22 +869,23 @@ type CReduceStockRequest struct {
 
 type CPayByPaymentCodeRequest struct {
 	Key            string
-	MchId          string `mch_id`
-	DeviceInfo     string `device_info`
-	Body           string `body`
-	Detail         string `detail`
-	Attach         string `attach`
-	OutTradeNo     string `out_trade_no`
-	TotalFee       int    `total_fee`
-	FeeType        string `fee_type`
-	SpbillCreateIp string `spbill_create_ip`
-	GoodsTag       string `goods_tag`
-	LimitPay       string `limit_pay`
-	TimeStart      string `time_start`
-	TimeExpire     string `time_expire`
-	Receipt        string `receipt`
-	AuthCode       string `auth_code`
-	SceneInfo      string `scene_info`
+	SignType       string
+	MchId          string
+	DeviceInfo     string
+	Body           string
+	Detail         string
+	Attach         string
+	OutTradeNo     string
+	TotalFee       int
+	FeeType        string
+	SpbillCreateIp string
+	GoodsTag       string
+	LimitPay       string
+	TimeStart      string
+	TimeExpire     string
+	Receipt        string
+	AuthCode       string
+	SceneInfo      string
 }
 
 type CPayByPaymentCodeResponse struct {
@@ -902,11 +903,14 @@ type CPayByPaymentCodeResponse struct {
 	OpenId             string   `xml:"openid"`
 	IsSubscribe        string   `xml:"is_subscribe"`
 	TradeType          string   `xml:"trade_type"`
+	TradeState         string   `xml:"trade_state"`
 	BankType           string   `xml:"bank_type"`
 	FeeType            string   `xml:"fee_type"`
 	TotalFee           int      `xml:"total_fee"`
 	SettlementTotalFee int      `xml:"settlement_total_fee"`
 	CouponFee          int      `xml:"coupon_fee"`
+	CouponCount        int      `xml:"coupon_count"`
+	CouponType         int      `xml:"coupon_type_$n"`
 	CashFeeType        string   `xml:"cash_fee_type"`
 	CashFee            int      `xml:"cash_fee"`
 	TransactionId      string   `xml:"transaction_id"`
@@ -914,4 +918,11 @@ type CPayByPaymentCodeResponse struct {
 	Attach             string   `xml:"attach"`
 	TimeEnd            string   `xml:"time_end"`
 	PromotionDetail    string   `xml:"promotion_detail"`
+}
+
+type CQueryOrderRequest struct {
+	MchId         string
+	TransactionId string
+	OutTradeNo    string
+	SignType      string
 }

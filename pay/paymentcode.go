@@ -31,12 +31,12 @@ func (this *CPayByPaymentCode) Commit(request *common.CPayByPaymentCodeRequest, 
 	req.OutTradeNo = request.OutTradeNo
 	req.Receipt = request.Receipt
 	req.SceneInfo = request.SceneInfo
-	req.SignType = common.SignEncrypyTypeMD5
+	req.SignType = request.SignType
 	req.SpbillCreateIp = request.SpbillCreateIp
 	req.TimeExpire = request.TimeExpire
 	req.TimeStart = request.TimeStart
 	req.TotalFee = request.TotalFee
-	sign, err := signValidateByStruct(&req, &request.Key, &common.SignEncrypyTypeMD5)
+	sign, err := signValidateByStruct(&req, &request.Key, &request.SignType)
 	if err != nil {
 		return nil, err
 	}
