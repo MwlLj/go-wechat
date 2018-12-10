@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"github.com/MwlLj/go-wechat/common"
 	"math/rand"
 	"reflect"
@@ -15,6 +16,8 @@ import (
 	"strings"
 	"time"
 )
+
+var _ = fmt.Println
 
 func struct2map(data interface{}) (*[]string, *map[string]string) {
 	kvs := make(map[string]string)
