@@ -866,3 +866,22 @@ type CReduceStockRequest struct {
 	SkuInfo   []CStockSkuInfo
 	Quantity  int
 }
+
+type CPayByPaymentCodeRequest struct {
+	MchId          string `mch_id`
+	DeviceInfo     string `device_info`
+	Body           string `body`
+	Detail         string `detail`
+	Attach         string `attach`
+	OutTradeNo     string `out_trade_no`
+	TotalFee       int    `total_fee`
+	FeeType        string `fee_type`
+	SpbillCreateIp string `spbill_create_ip`
+	GoodsTag       string `goods_tag`
+	LimitPay       string `limit_pay`
+	TimeStart      string `time_start`
+	TimeExpire     string `time_expire`
+	Receipt        string `receipt`
+	AuthCode       string `auth_code`
+	SceneInfo      string `scene_info`
+}

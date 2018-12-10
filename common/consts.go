@@ -10,3 +10,8 @@ var (
 	CommodityStatusGrounding     int = 1
 	CommodityStatusUnderCarriage int = 0
 )
+
+var (
+	SignEncrypyTypeHMACSHA256 string = "HMAC-SHA256"
+	SignEncrypyTypeMD5        string = "MD5"
+)

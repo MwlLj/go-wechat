@@ -99,3 +99,6 @@ type IShop interface {
 	AddStock(request *CAddStockRequest, timeoutMS int64) error
 	ReduceStock(request *CReduceStockRequest, timeoutMS int64) error
 }
+
+type IPayByPaymentCode interface {
+}

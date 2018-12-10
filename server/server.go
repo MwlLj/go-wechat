@@ -7,6 +7,7 @@ import (
 	"github.com/MwlLj/go-wechat/common"
 	"github.com/MwlLj/go-wechat/material"
 	"github.com/MwlLj/go-wechat/menu"
+	"github.com/MwlLj/go-wechat/pay"
 	"github.com/MwlLj/go-wechat/sender"
 	"github.com/MwlLj/go-wechat/shop"
 	"github.com/MwlLj/go-wechat/store"
@@ -211,6 +212,10 @@ func (this *CServer) Shop() common.IShop {
 
 func (this *CServer) Sender() common.ISender {
 	return sender.New(this.m_token)
+}
+
+func (this *CServer) PayByPaymengCode() common.IPayByPaymentCode {
+	return pay.NewPayByPaymentCode(this.m_token)
 }
 
 func New(info *common.CUserInfo) *CServer {

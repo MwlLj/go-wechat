@@ -3,5 +3,8 @@ package pay
 var (
 	SignField    string = "sign"
 	SignKeyField string = "key"
-	SignSha1Key  string = "sha256"
+)
+
+var (
+	PayByPaymentCodeCommitUrl string = "https://api.mch.weixin.qq.com/pay/micropay"
 )

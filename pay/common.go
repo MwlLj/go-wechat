@@ -3,20 +3,103 @@ package pay
 import (
 	"crypto/hmac"
 	"crypto/md5"
-	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
+	"errors"
+	"github.com/MwlLj/go-wechat/common"
 	"math/rand"
+	"reflect"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
 
-func signValidate(kvs *map[string]string, key *string) *string {
-	signValue := ""
+func signValidateByStruct(request *CPayByPaymentCodeRequest, key *string, encrypyType *string) (*string, error) {
+	kvs := make(map[string]string)
+	var keys []string
+	t := reflect.TypeOf(*request)
+	v := reflect.ValueOf(*request)
+	fieldNum := t.NumField()
+	for i := 0; i < fieldNum; i++ {
+		field := t.Field(i)
+		tag := string(field.Tag)
+		reg, err := regexp.Compile(`xml:"(.*?)"`)
+		if err != nil {
+			continue
+		}
+		rs := reg.FindStringSubmatch(tag)
+		if len(rs) != 2 {
+			continue
+		}
+		tagName := rs[1]
+		typeString := field.Type.String()
+		va := v.Field(i).Interface()
+		var value string
+		if typeString == "string" {
+			value = va.(string)
+		} else if typeString == "int64" {
+			value = strconv.FormatInt(va.(int64), 10)
+		} else if typeString == "int" || typeString == "int32" {
+			value = strconv.Itoa(va.(int))
+		} else if typeString == "float64" {
+			value = strconv.FormatFloat(va.(float64), 'f', 30, 32)
+		} else if typeString == "bool" {
+			value = strconv.FormatBool(va.(bool))
+		} else if typeString == "uint64" {
+			value = strconv.FormatUint(va.(uint64), 10)
+		} else if typeString == "unit" || typeString == "uint32" {
+			value = strconv.Itoa(va.(int))
+		}
+		if tagName == SignField || value == "" {
+			continue
+		}
+		keys = append(keys, tagName)
+		kvs[tagName] = value
+	}
+	joinStrings := ""
+	sort.Strings(keys)
+	// join kvs
+	i := 0
+	for _, k := range keys {
+		item := strings.Join([]string{k, kvs[k]}, "=")
+		if i == 0 {
+			joinStrings = item
+		} else {
+			joinStrings = strings.Join([]string{joinStrings, item}, "&")
+		}
+		i++
+	}
+	// join key
+	joinStrings = strings.Join([]string{joinStrings, "&", SignKeyField, "=", *key}, "/")
+	var sign string
+	// MD5
+	if *encrypyType == common.SignEncrypyTypeHMACSHA256 {
+		// hmac sha256
+		mac := hmac.New(sha256.New, []byte(*key))
+		mac.Write([]byte(joinStrings))
+		cipherStr := mac.Sum(nil)
+		hmacSign := hex.EncodeToString(cipherStr)
+		sign = strings.ToUpper(hmacSign)
+	} else if *encrypyType == common.SignEncrypyTypeMD5 {
+		h := md5.New()
+		h.Write([]byte(joinStrings))
+		cipherStr := h.Sum(nil)
+		md5Sign := hex.EncodeToString(cipherStr)
+		sign = strings.ToUpper(md5Sign)
+	} else {
+		return nil, errors.New("encrypy type not support")
+	}
+	return &sign, nil
+}
+
+func signValidate(kvs *map[string]string, key *string, encrypyType *string) (*string, error) {
+	// signValue := ""
 	var keys []string
 	for k, v := range *kvs {
 		if k == SignField {
-			signValue = v
+			// signValue = v
 		} else {
 			if v != "" {
 				keys = append(keys, k)
@@ -27,7 +110,7 @@ func signValidate(kvs *map[string]string, key *string) *string {
 	sort.Strings(keys)
 	// join kvs
 	i := 0
-	for k := range keys {
+	for _, k := range keys {
 		item := strings.Join([]string{k, (*kvs)[k]}, "=")
 		if i == 0 {
 			joinStrings = item
@@ -38,24 +121,28 @@ func signValidate(kvs *map[string]string, key *string) *string {
 	}
 	// join key
 	joinStrings = strings.Join([]string{joinStrings, "&", SignKeyField, "=", *key}, "/")
+	var sign string
 	// MD5
-	h := md5.New()
-	h.Write([]byte(joinStrings))
-	cipherStr := h.Sum(nil)
-	md5Sign := hex.EncodeToString(cipherStr)
-	md5Sign = strings.ToUpper(md5Sign)
-	// hmac sha1
-	/*
-		mac := hmac.New(sha1.New, []byte(SignSha1Key))
+	if *encrypyType == common.SignEncrypyTypeHMACSHA256 {
+		// hmac sha256
+		mac := hmac.New(sha256.New, []byte(*key))
 		mac.Write([]byte(joinStrings))
 		cipherStr := mac.Sum(nil)
 		hmacSign := hex.EncodeToString(cipherStr)
-		hmacSign = strings.ToUpper(hmacSign)
-	*/
-	return &md5Sign
+		sign = strings.ToUpper(hmacSign)
+	} else if *encrypyType == common.SignEncrypyTypeMD5 {
+		h := md5.New()
+		h.Write([]byte(joinStrings))
+		cipherStr := h.Sum(nil)
+		md5Sign := hex.EncodeToString(cipherStr)
+		sign = strings.ToUpper(md5Sign)
+	} else {
+		return nil, errors.New("encrypy type not support")
+	}
+	return &sign, nil
 }
 
-func getRandomString(length int) string {
+func genRandomString(length int) []byte {
 	str := "0123456789abcdefghijklmnopqrstuvwxyz"
 	bytes := []byte(str)
 	result := []byte{}
@@ -63,5 +150,5 @@ func getRandomString(length int) string {
 	for i := 0; i < length; i++ {
 		result = append(result, bytes[r.Intn(len(bytes))])
 	}
-	return string(result)
+	return result
 }
