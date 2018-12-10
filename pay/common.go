@@ -16,11 +16,11 @@ import (
 	"time"
 )
 
-func signValidateByStruct(request *CPayByPaymentCodeRequest, key *string, encrypyType *string) (*string, error) {
+func struct2map(data interface{}) (*[]string, *map[string]string) {
 	kvs := make(map[string]string)
 	var keys []string
-	t := reflect.TypeOf(*request)
-	v := reflect.ValueOf(*request)
+	t := reflect.TypeOf(data)
+	v := reflect.ValueOf(data)
 	fieldNum := t.NumField()
 	for i := 0; i < fieldNum; i++ {
 		field := t.Field(i)
@@ -58,12 +58,17 @@ func signValidateByStruct(request *CPayByPaymentCodeRequest, key *string, encryp
 		keys = append(keys, tagName)
 		kvs[tagName] = value
 	}
+	return &keys, &kvs
+}
+
+func signValidateByStruct(request *CPayByPaymentCodeRequest, key *string, encrypyType *string) (*string, error) {
+	keys, kvs := struct2map(*request)
 	joinStrings := ""
-	sort.Strings(keys)
+	sort.Strings(*keys)
 	// join kvs
 	i := 0
-	for _, k := range keys {
-		item := strings.Join([]string{k, kvs[k]}, "=")
+	for _, k := range *keys {
+		item := strings.Join([]string{k, (*kvs)[k]}, "=")
 		if i == 0 {
 			joinStrings = item
 		} else {
